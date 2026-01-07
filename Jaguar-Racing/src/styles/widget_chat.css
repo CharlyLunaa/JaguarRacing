@@ -1,9 +1,7 @@
 /* =============================================================================
-    JAGUAR RACING CHAT WIDGET - UI v3.2 (Z-Index Fix & Performance)
+   JAGUAR RACING CHAT WIDGET - UI v3.3 (Mobile Positioning Fix)
    ============================================================================= */
 
-/* --- 1. BOTÓN DISPARADOR (.chat-trigger) --- */
-/* --- 1. BOTÓN DISPARADOR (.chat-trigger) --- */
 /* --- 1. BOTÓN DISPARADOR (.chat-trigger) --- */
 .chat-trigger {
     position: fixed;
@@ -14,11 +12,8 @@
     
     /* MANEJO DE IMAGEN DE FONDO */
     background-color: var(--bg-black, #000);
-    /* 'cover' asegura que llene el espacio, 'center' la alinea */
     background-repeat: no-repeat;
     background-position: center center;
-    /* Si se ve descentrada o pequeña, subimos a 110% o 115% 
-       para "comerse" los bordes o piquitos de la imagen original */
     background-size: 160%; 
     
     border-radius: 50%;
@@ -26,12 +21,15 @@
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     
     cursor: pointer;
-    z-index: 998;
+    /* FIX Z-INDEX: Aseguramos que esté por debajo de la ventana */
+    z-index: 9998;
 
     /* RECORTE Y RENDIMIENTO */
     overflow: hidden; 
     contain: strict;
-    transform: translateZ(0);
+    
+    /* FIX BORROSO: Comentado para evitar problemas en algunas pantallas */
+    /* transform: translateZ(0); */
     
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
                 box-shadow 0.3s ease,
@@ -54,7 +52,7 @@
 /* --- 2. VENTANA PRINCIPAL (.chat-window) --- */
 .chat-window {
     position: fixed;
-    bottom: 90px;
+    bottom: 90px; /* En PC ya está encima del botón */
     right: 20px;
     width: 350px;
     max-width: 90vw;
@@ -68,16 +66,20 @@
     border: 1px solid var(--jaguar-gold, #A67C00);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 
-    /* CORRECCIÓN: Encima del trigger pero debajo del Menú Móvil */
-    z-index: 999; 
+    /* FIX Z-INDEX: Encima del trigger */
+    z-index: 9999; 
 
     opacity: 0;
     visibility: hidden;
     transform: translateY(20px);
     transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease;
 
-    /* OPTIMIZACIÓN MÓVIL: Evita tirones al abrir */
+    /* OPTIMIZACIÓN MÓVIL */
     will-change: transform, opacity;
+
+    /* FIX TEXTO BORROSO: Letras nítidas (HD) */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .chat-window--open {
@@ -269,12 +271,25 @@
     100% { opacity: 1; }
 }
 
-/* --- 8. FIX PARA MÓVILES --- */
+/* --- 8. FIX PARA MÓVILES (POSICIÓN Y ALTURA) --- */
 @media (max-width: 480px) {
+    /* Aseguramos la posición del botón */
+    .chat-trigger {
+        bottom: 20px;
+        right: 20px;
+    }
+
+    /* Ajustes de la ventana */
     .chat-window {
-        bottom: 85px;
+        /* FIX POSICIÓN: 
+           Botón (20px bottom + 60px altura) = 80px.
+           Ponemos la ventana en 90px para dejar 10px de espacio encima del botón. */
+        bottom: 90px !important; 
         right: 10px;
         width: calc(100% - 20px);
-        height: 400px; /* Reducimos altura para cargar menos contenido */
+        
+        /* FIX ALTURA: Un poco más chaparro que 80dvh */
+        height: 70dvh;
+        max-height: 70dvh;
     }
 }

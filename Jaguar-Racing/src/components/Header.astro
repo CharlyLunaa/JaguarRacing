@@ -72,8 +72,44 @@ const getMobileActiveClass = (path) => {
 </style>
 
 <script>
-    // Este evento se dispara CADA VEZ que cambias de página con ClientRouter
+    // Función para limpiar la URL (quitar la barra / del final si existe)
+    const normalizePath = (path) => {
+        return path === '/' ? path : path.replace(/\/$/, '');
+    };
+
+    function updateActiveLinks() {
+        const currentPath = normalizePath(window.location.pathname);
+        
+        // Seleccionamos TODOS los links (escritorio y móvil)
+        const allLinks = document.querySelectorAll('.nav-link, .mobile-nav__link');
+
+        allLinks.forEach(link => {
+            const linkPath = normalizePath(link.getAttribute('href'));
+
+            // Lógica para Escritorio
+            if (link.classList.contains('nav-link')) {
+                link.classList.remove('nav-link--active');
+                if (linkPath === currentPath) {
+                    link.classList.add('nav-link--active');
+                }
+            }
+
+            // Lógica para Móvil
+            if (link.classList.contains('mobile-nav__link')) {
+                link.classList.remove('mobile-nav__link--active');
+                if (linkPath === currentPath) {
+                    link.classList.add('mobile-nav__link--active');
+                }
+            }
+        });
+    }
+
+    // Este evento se dispara CADA VEZ que cambias de página
     document.addEventListener('astro:page-load', () => {
+        // 1. Ejecutamos la función de iluminar links inmediatamente
+        updateActiveLinks();
+
+        // 2. Lógica del Menú Hamburguesa 
         const hamburgerBtn = document.getElementById('nav-toggle');
         const sidebar = document.getElementById('mobile-nav');
         const overlay = document.getElementById('mobile-overlay');
@@ -86,12 +122,11 @@ const getMobileActiveClass = (path) => {
             document.body.style.overflow = isOpen ? 'hidden' : 'auto';
         }
 
-        // Limpiamos eventos previos y agregamos los nuevos
         hamburgerBtn?.addEventListener('click', toggleMenu);
         closeBtn?.addEventListener('click', toggleMenu);
         overlay?.addEventListener('click', toggleMenu);
         
-        // Lógica de Scroll
+        // 3. Lógica de Scroll 
         window.addEventListener("scroll", function () {
             const menu = document.getElementById("main-navbar");
             if (menu) {
