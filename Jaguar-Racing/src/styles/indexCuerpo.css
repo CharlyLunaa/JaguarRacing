@@ -249,6 +249,25 @@
    5. RESPONSIVE DESIGN (MÓVIL)
    ============================================================================= */
 @media (max-width: 768px) {
+    /* 1. FIX TÍTULO PATROCINADORES (Lo importante) */
+    .titulo-seccion {
+        /* Reducimos la fuente drásticamente en móvil para que quepa la palabra larga */
+        font-size: clamp(2rem, 10vw, 3rem) !important; 
+        
+        /* Quitamos el espacio entre letras para ganar espacio */
+        letter-spacing: 0 !important; 
+        
+        /* Aseguramos que ocupe casi todo el ancho disponible */
+        width: 95%;
+        margin-left: auto;
+        margin-right: auto;
+        
+        /* Si aun así es gigante, permite que se rompa en dos líneas de forma segura */
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        hyphens: auto;
+    }
+
     /* Identidad */
     .about-section {
         flex-direction: column;
@@ -279,7 +298,7 @@
 
     /* Join CTA */
     .join-cta {
-        background-attachment: scroll; /* Desactiva parallax en móvil para rendimiento */
+        background-attachment: scroll;
         justify-content: center;
         min-height: 400px;
     }
@@ -300,15 +319,20 @@
     }
     
     .sponsors-marquee {
-        /* Aseguramos que la animación corra suave */
         gap: 20px; 
+        animation-duration: 20s;
+    }
+
+    .sponsor-card {
+        width: 140px; 
+        height: 80px;
     }
 
     /* Cronograma - Ajustes Móvil */
     .events-section h2 {
-        font-size: 1.8rem; /* Reducimos tamaño */
-        letter-spacing: 3px; /* Reducimos espaciado */
-        word-wrap: break-word; /* Evita desbordamiento si la palabra es larga */
+        font-size: 1.8rem;
+        letter-spacing: 3px;
+        word-wrap: break-word;
     }
 
     .events-grid {
@@ -318,12 +342,12 @@
     }
 
     .event-card {
-        flex-direction: column; /* Tarjeta vertical en móvil */
+        flex-direction: column;
         text-align: center;
         padding: 20px;
     }
     
     .event-card__info {
-        text-align: center; /* Centrar texto dentro de tarjeta en móvil */
+        text-align: center;
     }
 }
