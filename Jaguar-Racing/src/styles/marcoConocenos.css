@@ -1,5 +1,5 @@
 /* =============================================================================
-   SECCIÓN ÉPICA: HALO RUNNER - v3.1 (Industrial Block Buttons)
+   SECCIÓN ÉPICA: HALO RUNNER - OPTIMIZADO PERFORMANCE v3.2
    ============================================================================= */
 
 /* Contenedor Principal */
@@ -48,7 +48,7 @@
     z-index: 1;
 }
 
-/* Efecto de Halo */
+/* Efecto de Halo (Optimizado) */
 .marco-halo-container::before {
     content: '';
     position: absolute;
@@ -63,7 +63,10 @@
     );
     top: -25%;
     left: -25%;
+    
+    /* Solo animamos en desktop/tablets potentes */
     animation: rotate-halo 3s linear infinite;
+    will-change: transform; /* Aviso a la GPU */
     z-index: -1;
 }
 
@@ -110,8 +113,7 @@
 }
 
 /* =============================================================================
-   BOTONES DE ACCIÓN (NUEVO ESTILO: INDUSTRIAL BLOCK)
-   Optimizado para usuario móvil: Zona de toque masiva y feedback instantáneo
+   BOTONES DE ACCIÓN (INDUSTRIAL BLOCK)
    ============================================================================= */
 .acciones-equipo {
     display: flex;
@@ -123,45 +125,36 @@
 
 .btn-tech {
     position: relative;
-    display: flex; /* Centrado perfecto */
+    display: flex;
     justify-content: center;
     align-items: center;
-    
-    /* TAMAÑO GENEROSO (Fácil de tocar) */
     padding: 16px 45px;
     min-width: 200px;
     
-    /* ESTILO CUADRADO / INDUSTRIAL */
-    background-color: #000; /* Fondo Negro Sólido */
-    border: 2px solid var(--jaguar-gold, #FFE878); /* Borde Dorado Grueso */
-    border-radius: 0; /* Cuadrado perfecto (Estilo rudo) */
+    background-color: #000;
+    border: 2px solid var(--jaguar-gold, #FFE878);
+    border-radius: 0;
     
-    /* TIPOGRAFÍA */
     color: var(--jaguar-gold, #FFE878);
     font-family: var(--font-main, sans-serif);
-    font-weight: 800; /* Letra muy gruesa */
+    font-weight: 800;
     font-size: 1rem;
     text-transform: uppercase;
     text-decoration: none;
     letter-spacing: 1px;
     
-    /* INTERACCIÓN */
     cursor: pointer;
-    transition: all 0.2s ease-out; /* Rápido para sensación ágil */
-    
-    /* Evita el color azul al tocar en móviles */
+    transition: all 0.2s ease-out;
     -webkit-tap-highlight-color: transparent;
     user-select: none;
 }
 
-/* ESTADO ACTIVE (Feedback Táctil Inmediato) */
 .btn-tech:active {
-    background-color: var(--jaguar-gold, #FFE878); /* Se llena de dorado */
-    color: #000; /* Letras negras */
-    transform: scale(0.96); /* Efecto de presión */
+    background-color: var(--jaguar-gold, #FFE878);
+    color: #000;
+    transform: scale(0.96);
 }
 
-/* HOVER (Solo PC) */
 @media (hover: hover) {
     .btn-tech:hover {
         background-color: rgba(255, 232, 120, 0.1); 
@@ -170,7 +163,7 @@
     }
 }
 
-/* --- RESPONSIVIDAD (MÓVIL) --- */
+/* --- RESPONSIVIDAD (MÓVIL) - OPTIMIZADO CON EFECTO --- */
 @media (max-width: 768px) {
     .team-showcase {
         padding: 4rem 1rem;
@@ -197,6 +190,26 @@
         display: block; 
     }
 
+    .marco-halo-container::before {
+        /* Usamos la animación nueva */
+        animation: pulse-gold 2.5s ease-in-out infinite !important; /* Un poco más rápido (2.5s) para más intensidad */
+        
+        will-change: opacity, transform, filter;
+        
+        /* EL SECRETO DEL BRILLO: */
+        /* Un gradiente radial que va de Transparente -> Oro -> BLANCO en los bordes */
+        background: radial-gradient(
+            circle, 
+            transparent 30%, 
+            #A67C00 60%, 
+            #FFE878 85%, 
+            #FFFFFF 100% /* <--- Este blanco final crea el efecto de luz pura */
+        );
+        
+        /* Modo de fusión para que el brillo "queme" sobre el fondo oscuro */
+        mix-blend-mode: screen; 
+    }
+
     .foto-equipo-cad {
         width: 100%;   
         height: auto;
@@ -205,20 +218,39 @@
     .halo-inner-shadow { padding: 5px; }
     .bracket { width: 25px; height: 25px; }
 
-    /* AJUSTE DE BOTONES MÓVIL (User Centric - Reducido) */
+    /* BOTONES MÓVIL */
     .acciones-equipo {
-        flex-direction: column; /* Apilados */
+        flex-direction: column;
         gap: 15px;
         width: 100%;
-        align-items: center; /* Centra los botones */
+        align-items: center;
         padding: 0 20px; 
     }
 
     .btn-tech {
         width: 100%;      
-        max-width: 280px;  /* Limitamos el ancho para que no sean gigantes */
-        padding: 14px 0;  /* Reducimos la altura del botón */
-        font-size: 1rem;   /* Ajustamos ligeramente el tamaño de letra */
+        max-width: 280px;
+        padding: 14px 0;
+        font-size: 1rem;
     }
 }
+
+/* --- ANIMACIÓN MÓVIL "REACTOR NUCLEAR" (GPU SAFE) --- */
+@keyframes pulse-gold {
+    0% {
+        opacity: 0.6; /* Empieza visible, no tan apagado */
+        transform: scale(0.95);
+        filter: brightness(1);
+    }
+    50% {
+        opacity: 1; 
+        transform: scale(1.05); /* Se expande más */
+        /* TRUCO: Brillo al 170% + Contraste alto hace que los colores "exploten" */
+        filter: brightness(1.7) contrast(1.2); 
+    }
+    100% {
+        opacity: 0.6;
+        transform: scale(0.95);
+        filter: brightness(1);
+    }
 }

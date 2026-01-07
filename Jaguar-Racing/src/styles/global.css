@@ -127,6 +127,8 @@ img {
     padding: 15px 30px;
     background-color: transparent;
     transition: background-color 0.4s ease, padding 0.4s ease;
+    will-change: background-color;
+    transform: translateZ(0);
 }
 
 .main-navbar--scrolled {
@@ -456,54 +458,43 @@ img {
 
     /* 📍 FIX PATROCINADORES: Seguridad para palabras largas */
     h2 {
-        /* 1. TAMAÑO: Mantenemos tu 90% del Hero para impacto */
-        font-size: calc(var(--fs-hero) * 0.9) !important;
+        /* CAMBIADO: Tamaño realista */
+        font-size: clamp(1.8rem, 6vw, 2.5rem) !important;
 
-        /* 2. COMPORTAMIENTO DE LÍNEAS (Aquí está la solución) */
         word-spacing: normal;
-        /* Espaciado normal entre palabras */
         word-break: normal;
-        /* IMPORTANTE: Prohíbe romper palabras a la mitad */
         overflow-wrap: break-word;
-        /* Solo rompe si UNA sola palabra es más ancha que toda la pantalla */
         hyphens: none;
-        /* IMPORTANTE: Desactiva los guiones (-) automáticos */
-
-        /* 3. ESTILO */
-        line-height: 1.1;
-        letter-spacing: -1px;
+        line-height: 1.2;
+        letter-spacing: -0.5px;
         width: 94%;
         margin: 0 auto 1.5rem auto;
         color: var(--jaguar-gold);
         text-align: center;
-        /* Aseguramos que se vea bien apilado */
     }
 
     /* 📍 HERO STACKED: JAGUAR arriba / RACING abajo */
     .hero__title {
-    /* AJUSTE FINO: De 13vw bajamos a 11.5vw.
-       Esto es lo suficientemente grande para JAGUAR, 
-       pero deja entrar la 'A' de CONVOCATORIA. */
-    font-size: 11.5vw !important; 
-    
-    /* Ganamos espacio extra a los lados (de 95% a 98%) */
-    width: 98%; 
-    
-    /* Mantenemos el estilo apilado */
-    word-spacing: 100vw; 
-    line-height: 0.9;
-    letter-spacing: -1px; /* Letras juntas pero legibles */
-    
-    /* Posicionamiento */
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    white-space: normal;
-    text-align: center;
-    overflow-wrap: break-word; /* Seguridad por si acaso */
-}
+        font-size: 11.5vw !important;
+        width: 98%;
+        /* CAMBIADO: Quitamos el hack de word-spacing */
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+
+        line-height: 0.9;
+        letter-spacing: -1px;
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+
+        /* Opcional: Quitar sombra pesada en móvil para ganar FPS */
+        filter: none;
+    }
 }
 
 @media (max-width: 480px) {

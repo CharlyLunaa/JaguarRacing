@@ -23,7 +23,7 @@ const patrocinadores = [
                 alt="Nuestros Patrocinadores" 
                 class="hero__image" 
                 fetchpriority="high" 
-                decoding="sync"
+                decoding="async"
                 loading="eager"
                 width="1358"
                 height="649"
@@ -44,7 +44,7 @@ const patrocinadores = [
                     </p>
                 </div>
 
-                <a href="/Dossier_SAE_UNI-ES.pdf" target="_blank" class="dossier-btn" download>
+                <a href="/Dossier_SAE_UNI-ES.pdf" target="_blank" rel="noopener noreferrer" class="dossier-btn" download>
                     <div class="dossier-btn__icon">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 16L7 11H10V4H14V11H17L12 16ZM20 19H4V17H20V19Z"/>
@@ -66,6 +66,7 @@ const patrocinadores = [
                                     src={`/img/IMGpatrocinadores/${img}`} 
                                     alt="Patrocinador Jaguar Racing" 
                                     loading="lazy" 
+                                    decoding="async"
                                     width="300" 
                                     height="200"
                                 />

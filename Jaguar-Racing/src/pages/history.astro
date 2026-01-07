@@ -18,7 +18,7 @@ const pageTitle = "Nuestra Trayectoria";
                 alt="Trayectoria en Baja SAE" 
                 class="hero__image" 
                 fetchpriority="high" 
-                decoding="sync"
+                decoding="async"
                 loading="eager"
                 width="1200"
                 height="627"
@@ -64,7 +64,7 @@ const pageTitle = "Nuestra Trayectoria";
                     </div>
                 </div>
 
-                <div class="timeline-event timeline-event--right apple-scroll">
+                <div class="timeline-event timeline-event--right">
                     <div class="timeline-event__content">
                         <span class="timeline-event__year">2020</span>
                         <img src="/img/IMGTrayectoria/h3.webp" alt="Doble Finalista 2020" class="timeline-event__img" 
@@ -77,7 +77,7 @@ const pageTitle = "Nuestra Trayectoria";
                     </div>
                 </div>
 
-                <div class="timeline-event timeline-event--left apple-scroll">
+                <div class="timeline-event timeline-event--left">
                     <div class="timeline-event__content">
                         <span class="timeline-event__year">2019</span>
                         <img src="/img/IMGTrayectoria/h4.webp" alt="Campeones 2019" class="timeline-event__img" 
@@ -95,10 +95,13 @@ const pageTitle = "Nuestra Trayectoria";
 </Layout>
 
 <style>
-    /* Optimizaciones de renderizado */
+    /* Optimizaciones de renderizado SEGURAS */
     .timeline-event {
+        /* content-visibility ayuda al navegador a saltarse el renderizado de lo que no está en pantalla */
         content-visibility: auto; 
-        contain-intrinsic-size: 500px;
-        will-change: transform, opacity;
+        contain-intrinsic-size: 500px; /* Estimación de altura para evitar saltos de scroll */
+        
+        /* CAMBIO: Usamos contain: layout en lugar de will-change para aislar sin gastar memoria GPU */
+        contain: layout;
     }
 </style>

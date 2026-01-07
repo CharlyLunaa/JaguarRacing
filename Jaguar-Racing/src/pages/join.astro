@@ -21,7 +21,7 @@ const areas = ['1.webp', '2.webp', '3.webp', '4.webp', '5.webp', '6.webp', '7.we
                 alt="Convocatoria Jaguar Racing" 
                 class="hero__image" 
                 fetchpriority="high" 
-                decoding="sync"
+                decoding="async"
                 loading="eager"
                 width="1300"
                 height="602"
@@ -43,8 +43,8 @@ const areas = ['1.webp', '2.webp', '3.webp', '4.webp', '5.webp', '6.webp', '7.we
                             class="area-card__img"
                             width="640"
                             height="360"
-                            loading={index < 2 ? "eager" : "lazy"} 
-                            decoding={index < 2 ? "sync" : "async"}
+                            loading="lazy" 
+                            decoding="async"
                         />
                     </div>
                 ))}
@@ -63,7 +63,7 @@ const areas = ['1.webp', '2.webp', '3.webp', '4.webp', '5.webp', '6.webp', '7.we
                     si tienes ganas de aprender y competir, hay un lugar para ti en Jaguar Racing.
                 </p>
                 
-                <a href="https://forms.office.com/r/tuliNK" target="_blank" class="teams-btn">
+                <a href="https://forms.office.com/r/tuliNK" target="_blank" rel="noopener noreferrer" class="teams-btn">
                     <span class="teams-btn__bracket"></span>
                     FORMULARIO DE REGISTRO
                     <span class="teams-btn__icon"></span>

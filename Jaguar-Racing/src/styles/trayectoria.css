@@ -1,5 +1,5 @@
 /* =============================================================================
-   JAGUAR RACING - TRAYECTORIA v4.0 (Mobile Fluid & Global Sync)
+   JAGUAR RACING - TRAYECTORIA v4.1 (OPTIMIZED PERFORMANCE)
    ============================================================================= */
 
 :root {
@@ -7,15 +7,19 @@
     --gold-dark: var(--jaguar-gold, #A67C00);
     --bg-dark: var(--bg-black, #0a0a0a);
     
-    --glass-bg: rgba(20, 20, 20, 0.9);
-    --glass-border: rgba(166, 124, 0, 0.4);
+    /* Fondo Glass (Desktop) */
+    --glass-bg: rgba(20, 20, 20, 0.85);
+    /* Fondo Sólido (Móvil - Rendimiento) */
+    --solid-bg: #111111; 
 }
 
 /* --- SECCIÓN PRINCIPAL --- */
 .history-section {
     background: radial-gradient(circle at top, #151515 0%, var(--bg-dark) 100%);
     padding: 80px 20px;
-    overflow-x: hidden;
+    /* IMPORTANTE: Evita scroll horizontal accidental */
+    overflow-x: hidden; 
+    contain: content; /* Aisla el renderizado de esta sección */
 }
 
 /* --- CONTENEDOR TIMELINE --- */
@@ -44,23 +48,29 @@
     width: 50%;
     box-sizing: border-box;
     margin-bottom: 60px;
+    
+    /* Ayuda al navegador a optimizar */
+    will-change: transform; 
 }
 
 .timeline-event--left { left: 0; }
 .timeline-event--right { left: 50%; }
 
-/* --- CONTENIDO TARJETA (GLASS) --- */
+/* --- CONTENIDO TARJETA (GLASS - DESKTOP) --- */
 .timeline-event__content {
     padding: 40px 30px 30px 30px;
     background: var(--glass-bg);
+    
+    /* En PC sí usamos el blur */
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
     border-radius: 8px;
     position: relative;
-    
     border: 1px solid var(--gold-primary);
     box-shadow: 0 0 20px rgba(166, 124, 0, 0.2);
     
-    /* SEGURIDAD DE TEXTO: Evita desbordes */
+    /* SEGURIDAD DE TEXTO */
     overflow-wrap: break-word;
     word-break: break-word;
 }
@@ -73,7 +83,7 @@
     background: var(--gold-dark);
     color: #000;
     font-family: 'Arial Black', sans-serif;
-    font-size: 1.1rem; /* Un poco más compacto */
+    font-size: 1.1rem;
     padding: 5px 12px;
     border-radius: 4px;
     font-weight: bold;
@@ -96,6 +106,9 @@
     border-radius: 4px;
     margin-bottom: 20px;
     border: 1px solid rgba(255, 255, 255, 0.05);
+    
+    /* Evita layout shift */
+    display: block; 
 }
 
 /* --- PUNTOS (DOTS) --- */
@@ -118,10 +131,7 @@
     margin: 10px 0;
     color: var(--gold-primary);
     text-transform: uppercase;
-    
-    /* CAMBIO CLAVE: Usamos la variable fluida global */
     font-size: var(--fs-h3, 1.4rem); 
-    
     letter-spacing: 0.5px;
     line-height: 1.3;
 }
@@ -148,25 +158,26 @@
     font-style: italic;
 }
 
-/* --- RESPONSIVE DESIGN (MÓVIL OPTIMIZADO) --- */
+/* =============================================================================
+   RESPONSIVE DESIGN (MÓVIL ALTO RENDIMIENTO)
+   ============================================================================= */
 @media screen and (max-width: 768px) {
-    /* Mover la línea a la izquierda para dar más espacio al contenido */
     .history-timeline::after { left: 15px; }
     
     .timeline-event { 
         width: 100%; 
-        padding-left: 35px; /* Reducimos padding para ganar ancho */
+        padding-left: 35px; 
         padding-right: 0; 
         margin-bottom: 40px;
+        /* En móvil quitamos will-change para ahorrar RAM */
+        will-change: auto; 
     }
     
     .timeline-event--left, 
     .timeline-event--right { left: 0; }
     
-    /* Ajuste de los puntos */
     .timeline-event::after { left: 9px !important; right: auto; }
     
-    /* El año siempre a la izquierda en móvil */
     .timeline-event__year { 
         left: 20px !important; 
         right: auto !important; 
@@ -174,8 +185,18 @@
         padding: 4px 10px;
     }
 
-    /* Padding interno de la tarjeta más compacto */
+    /* OPTIMIZACIÓN RENDIMIENTO TARJETA MÓVIL */
     .timeline-event__content {
         padding: 35px 20px 20px 20px;
+        
+        /* 1. Fondo sólido opaco en vez de transparente */
+        background: var(--solid-bg); 
+        
+        /* 2. CRÍTICO: Eliminamos blur para evitar lag al scrollear */
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        
+        /* 3. Sombra más sencilla */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
 }

@@ -246,26 +246,28 @@
 
 
 /* =============================================================================
-   5. RESPONSIVE DESIGN (MÓVIL)
+   5. RESPONSIVE DESIGN (MÓVIL) - OPTIMIZADO PERFORMANCE
    ============================================================================= */
 @media (max-width: 768px) {
-    /* 1. FIX TÍTULO PATROCINADORES (Lo importante) */
+    /* 1. FIX TÍTULO PATROCINADORES */
     .titulo-seccion {
-        /* Reducimos la fuente drásticamente en móvil para que quepa la palabra larga */
         font-size: clamp(2rem, 10vw, 3rem) !important; 
-        
-        /* Quitamos el espacio entre letras para ganar espacio */
         letter-spacing: 0 !important; 
-        
-        /* Aseguramos que ocupe casi todo el ancho disponible */
         width: 95%;
         margin-left: auto;
         margin-right: auto;
-        
-        /* Si aun así es gigante, permite que se rompa en dos líneas de forma segura */
         overflow-wrap: break-word;
         word-wrap: break-word;
         hyphens: auto;
+    }
+
+    /* 2. OPTIMIZACIÓN CRÍTICA DE RENDIMIENTO (TEXTO) 
+       Eliminamos filtros pesados en móviles para que el scroll fluya */
+    .about-section__content h2,
+    .events-section h2,
+    .join-cta__text h2 {
+        filter: none !important; /* Adiós sombras costosas */
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Alternativa ligera */
     }
 
     /* Identidad */
@@ -296,9 +298,10 @@
         max-width: 70%;
     }
 
-    /* Join CTA */
+    /* Join CTA - FIX RENDIMIENTO */
     .join-cta {
-        background-attachment: scroll;
+        /* IMPORTANTE: Forzamos scroll. 'fixed' mata el rendimiento en móvil */
+        background-attachment: scroll !important; 
         justify-content: center;
         min-height: 400px;
     }
@@ -313,7 +316,7 @@
         font-size: 2.2rem;
     }
 
-    /* Patrocinadores - Ajustes Móvil */
+    /* Patrocinadores */
     .sponsors-section {
         padding: 40px 0;
     }
@@ -328,7 +331,7 @@
         height: 80px;
     }
 
-    /* Cronograma - Ajustes Móvil */
+    /* Cronograma */
     .events-section h2 {
         font-size: 1.8rem;
         letter-spacing: 3px;
@@ -345,6 +348,9 @@
         flex-direction: column;
         text-align: center;
         padding: 20px;
+        /* FIX: Quitamos efectos hover en táctil para ahorrar batería/CPU */
+        transform: none !important; 
+        transition: border-color 0.3s ease; /* Solo animamos color, no posición */
     }
     
     .event-card__info {

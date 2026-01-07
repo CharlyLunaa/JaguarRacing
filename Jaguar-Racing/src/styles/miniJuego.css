@@ -1,11 +1,10 @@
 /* =============================================================================
-   MINIJUEGO: REACCIÓN JAGUAR (VERSIÓN COMPACTA / FULL VIEWPORT)
+   MINIJUEGO: REACCIÓN JAGUAR (OPTIMIZADO GPU v4.0)
    ============================================================================= */
 
 /* 1. SECCIÓN PRINCIPAL */
 .reaction-game-section {
     position: relative;
-    /* Reducimos el padding vertical drásticamente (de 80px a 40px) */
     padding: 40px 15px; 
     background-color: #050505;
     background-image: 
@@ -16,8 +15,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Opcional: Esto intenta que ocupe máximo el alto de la pantalla si es posible */
     min-height: 80vh; 
+    /* Optimización: Si no se ve, no se renderiza */
+    content-visibility: auto; 
 }
 
 /* 2. CONTENEDOR INTERNO */
@@ -26,83 +26,89 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 700px; /* Un poco más estrecho para compactar */
+    max-width: 700px;
     text-align: center;
 }
 
 .reaction-title {
     color: #fff;
     font-family: 'Arial Black', sans-serif;
-    /* Fuente un poco más chica para que no robe tanto espacio */
     font-size: clamp(1.8rem, 4vw, 2.5rem); 
     text-transform: uppercase;
-    margin-bottom: 5px; /* Margen mínimo */
+    margin-bottom: 5px; 
     letter-spacing: 1px;
     line-height: 1.1;
+    /* Quitamos sombras de texto en el título para priorizar el juego */
+    text-shadow: none; 
 }
 
 .gold-text { color: #A67C00; }
 
 .reaction-instruction {
     color: #999;
-    margin-bottom: 20px; /* Reducido de 40px */
+    margin-bottom: 20px;
     font-size: 0.95rem;
     font-weight: 300;
 }
 
-/* --- 3. SEMÁFORO (COMPACTO) --- */
+/* --- 3. SEMÁFORO (OPTIMIZADO) --- */
 .semaphore-board {
     display: flex;
     justify-content: center;
     gap: 12px;
-    /* Márgenes y paddings reducidos para ganar altura */
     margin-bottom: 25px; 
     padding: 20px 30px; 
     background: #000;
     border-radius: 12px;
     border: 3px solid #333;
+    /* Sombra estática es barata, no hay problema aquí */
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     width: auto;
     max-width: 100%;
 }
 
 .light {
-    /* Reducimos tamaño base de 60px a 50px */
     width: 50px; 
     height: 50px;
-    background-color: #2a0000;
+    background-color: #2a0000; /* Rojo apagado */
     border-radius: 50%;
     border: 3px solid #111;
     flex-shrink: 0;
-    transition: background-color 0.1s, box-shadow 0.1s;
+    
+    /* CRÍTICO: Solo animamos background y transform. Box-shadow es pesado si se anima mucho */
+    transition: background-color 0.1s; 
+    will-change: background-color; /* Aviso a la GPU */
 }
 
-/* ESTADOS DE LUZ */
+/* ESTADOS DE LUZ (PC - ALTA CALIDAD) */
 .light.red {
     background-color: #ff0000;
-    box-shadow: 0 0 20px #ff0000, inset 0 0 10px rgba(255,255,255,0.5);
     border-color: #500;
+    /* Sombra completa en escritorio */
+    box-shadow: 0 0 20px #ff0000, inset 0 0 10px rgba(255,255,255,0.5);
 }
 
 .light.green {
     background-color: #00ff00;
-    box-shadow: 0 0 35px #00ff00, inset 0 0 15px rgba(255,255,255,0.8);
     border-color: #050;
     transform: scale(1.1);
+    /* Sombra completa en escritorio */
+    box-shadow: 0 0 35px #00ff00, inset 0 0 15px rgba(255,255,255,0.8);
 }
 
 /* --- 4. RESULTADOS Y ESTADÍSTICAS --- */
 .reaction-result {
     font-family: 'Courier New', monospace;
-    font-size: 3rem; /* Ligeramente más chico */
+    font-size: 3rem;
     font-weight: bold;
     color: #A67C00;
-    margin-bottom: 15px; /* Reducido */
-    height: 60px; /* Reducido */
+    margin-bottom: 15px; 
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
-    text-shadow: 0 0 15px rgba(166, 124, 0, 0.3);
+    /* Texto plano en móvil es mejor, pero mantenemos simple */
+    text-shadow: none; 
 }
 
 .stats-container {
@@ -110,7 +116,7 @@
     justify-content: center;
     align-items: center;
     gap: 15px;
-    margin-bottom: 25px; /* Reducido de 40px */
+    margin-bottom: 25px; 
     flex-wrap: wrap;
 }
 
@@ -136,7 +142,6 @@
 /* --- 5. BOTÓN DE CARRERAS (SLIM) --- */
 .btn-race {
     position: relative;
-    /* Botón más delgado para no ocupar media pantalla */
     padding: 12px 45px; 
     font-size: 1.1rem;
     font-weight: 900;
@@ -145,15 +150,14 @@
     border: none;
     clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.1s; /* Solo animamos movimiento, no sombras */
     text-transform: uppercase;
     letter-spacing: 1px;
-}
-
-.btn-race:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 10px 30px rgba(166, 124, 0, 0.5);
-    background: linear-gradient(180deg, #ffe033 0%, #d4a000 100%);
+    
+    /* Evita el highlight azul en móvil */
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    touch-action: manipulation; /* Mejora respuesta táctil */
 }
 
 .btn-race:active {
@@ -163,54 +167,89 @@
 .btn-race.penalty {
     background: linear-gradient(180deg, #ff4444 0%, #cc0000 100%);
     color: white;
-    box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
 }
 
 /* Colores de Rango */
-.rank-legend { background: linear-gradient(45deg, #FFD700, #A67C00); color: black; box-shadow: 0 0 15px #FFD700; border: none; }
+.rank-legend { background: linear-gradient(45deg, #FFD700, #A67C00); color: black; border: none; }
 .rank-pro { background: rgba(0, 255, 0, 0.1); color: #00ff00; border-color: #00ff00; }
 .rank-avg { border-color: #fff; color: #fff; }
 .rank-slow { border-color: #ff4444; color: #ff4444; }
 
-/* RESPONSIVE AGRESIVO PARA MÓVIL */
+/* =============================================================================
+   RESPONSIVE MÓVIL: MODO "VISUAL + RENDIMIENTO" (GPU GLOW)
+   ============================================================================= */
 @media (max-width: 600px) {
     .reaction-game-section { 
-        padding: 30px 10px; /* Padding mínimo en móvil */
+        padding: 30px 10px; 
         min-height: auto;
     }
     
     .semaphore-board { 
-        gap: 6px; 
-        padding: 12px 20px;
+        gap: 8px; /* Un poquito más de espacio */
+        padding: 15px 20px;
         margin-bottom: 20px;
         border-width: 2px;
+        background: #000;
     }
     
     .light { 
-        width: 32px; /* Luces pequeñas en móvil */
-        height: 32px; 
+        width: 35px; 
+        height: 35px; 
         border-width: 2px;
-    }
-    
-    .reaction-title {
-        font-size: 1.6rem;
-    }
-
-    .reaction-result { 
-        font-size: 2.2rem; 
-        height: 50px;
-        margin-bottom: 10px;
-    }
-    
-    .btn-race { 
-        width: 100%; 
-        max-width: 300px;
-        padding: 12px; 
-        font-size: 1rem;
+        position: relative; /* Necesario para el brillo falso */
+        background-color: #2a0000; /* Rojo apagado */
+        z-index: 1; /* Para que el foco esté sobre el brillo */
+        transition: background-color 0.05s; /* Cambio de color instantáneo */
     }
 
-    .stats-container {
-        gap: 10px;
-        margin-bottom: 20px;
+    /* EL TRUCO DEL RENDIMIENTO:
+       Creamos el brillo ("glow") como un elemento separado detrás del foco.
+       Así no calculamos sombras, solo mostramos/ocultamos una capa. */
+    .light::after {
+        content: '';
+        position: absolute;
+        top: -50%; left: -50%; 
+        width: 200%; height: 200%; /* El brillo es el doble de grande que el foco */
+        border-radius: 50%;
+        opacity: 0; /* Apagado por defecto */
+        z-index: -1; /* Detrás del foco */
+        will-change: opacity; /* GPU lista */
+        transition: opacity 0.1s ease-out;
+        pointer-events: none;
     }
+
+    /* ESTADO ROJO (ENCENDIDO) */
+    .light.red {
+        background-color: #ff0000; /* Foco rojo intenso */
+        border-color: #ffcccc; /* Borde casi blanco (centro caliente) */
+        box-shadow: none; /* Sin lag */
+    }
+
+    /* Activamos el brillo rojo */
+    .light.red::after {
+        opacity: 1;
+        /* Gradiente pre-renderizado: Mucho más rápido que box-shadow */
+        background: radial-gradient(circle, rgba(255, 0, 0, 0.8) 0%, rgba(255, 0, 0, 0) 70%);
+    }
+
+    /* ESTADO VERDE (SALIDA) */
+    .light.green {
+        background-color: #00ff00; /* Foco verde intenso */
+        border-color: #ccffcc; /* Borde casi blanco */
+        transform: scale(1.1);
+        box-shadow: none;
+    }
+
+    /* Activamos el brillo verde */
+    .light.green::after {
+        opacity: 1;
+        background: radial-gradient(circle, rgba(0, 255, 0, 0.8) 0%, rgba(0, 255, 0, 0) 70%);
+    }
+    
+    /* RESTO DE AJUSTES MÓVIL (Títulos, Botones, etc.) */
+    .reaction-title { font-size: 1.6rem; }
+    .reaction-result { font-size: 2.2rem; height: 50px; margin-bottom: 10px; }
+    .btn-race { width: 100%; max-width: 300px; padding: 14px; font-size: 1rem; box-shadow: none !important; }
+    .stats-container { gap: 10px; margin-bottom: 20px; }
+    .rank-legend { box-shadow: none; }
 }

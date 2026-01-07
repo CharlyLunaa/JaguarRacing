@@ -1,5 +1,5 @@
 /* =============================================================================
-   CARRUSEL "ÁREAS" - JAGUAR RACING v3.0 (BEM & Global Vars)
+   CARRUSEL "ÁREAS" - OPTIMIZADO PERFORMANCE v3.1
    ============================================================================= */
 
 /* --- 1. CONTENEDOR PRINCIPAL (.areas-showcase) --- */
@@ -8,7 +8,6 @@
     width: 100%;
     padding: 60px 0;
     
-    /* Fondo radial oscuro (mantenemos tu diseño original) */
     background: radial-gradient(circle at center, #111 0%, #000 100%);
     
     display: flex;
@@ -30,13 +29,14 @@
     letter-spacing: 2px;
     margin-bottom: 30px;
     
-    /* Efecto Oro usando variables globales */
+    /* Efecto Oro */
     background: linear-gradient(135deg, var(--jaguar-gold, #A67C00) 0%, #FFE878 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
     
+    /* Filtro solo si no es móvil (se apaga en media query) */
     filter: drop-shadow(0 4px 10px rgba(0,0,0,0.8));
 }
 
@@ -47,7 +47,7 @@
     width: 100%;
     max-width: 1400px;
     
-    /* Configuración de Scroll Horizontal */
+    /* SCROLL NATIVO (GPU) - LA CLAVE DE LA FLUIDEZ */
     overflow-x: auto;
     scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
@@ -77,31 +77,29 @@
     aspect-ratio: 16 / 9;
     height: auto;
     
-    /* Estética Cristal y Fondo de Carga */
+    /* Fondo opaco por defecto para rendimiento */
     background-color: #1a1a1a;
     background-image: linear-gradient(45deg, #1a1a1a, #222);
     
-    backdrop-filter: blur(10px);
+    /* Borde sutil */
     border: 1px solid rgba(166, 124, 0, 0.3);
     border-radius: 15px;
     
-    /* Layout Interno */
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
     padding: 0;
     
-    /* Sombras y Rendimiento */
+    /* Sombra media */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    
-    /* Aceleración GPU */
-    transform: translateZ(0); 
-    will-change: transform;
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     
     user-select: none;
     -webkit-user-drag: none;
+    
+    /* En Desktop usamos efectos bonitos */
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* Imagen dentro de la tarjeta */
@@ -111,15 +109,13 @@
     object-fit: cover;
     opacity: 0.9;
     background-color: #1a1a1a;
-    
     transition: transform 0.5s ease, opacity 0.4s ease;
-    will-change: transform;
 }
 
 /* Interacción Hover (Solo PC) */
 @media (hover: hover) {
     .area-card:hover {
-        transform: scale(1.02) translateZ(0);
+        transform: scale(1.02);
         border-color: #FFE878;
         box-shadow: 0 15px 40px rgba(0,0,0,0.8);
         z-index: 2;
@@ -131,20 +127,17 @@
     }
 }
 
-/* --- 4. NAVEGACIÓN (.areas-showcase__btn) --- */
+/* --- 4. NAVEGACIÓN --- */
 .areas-showcase__btn {
     position: absolute;
     top: 55%;
     transform: translateY(-50%);
     z-index: 20;
-    
     width: 50px;
     height: 50px;
-    
     display: flex;
     align-items: center;
     justify-content: center;
-    
     background: rgba(0,0,0,0.3);
     backdrop-filter: blur(4px);
     border: 2px solid var(--jaguar-gold, #A67C00);
@@ -164,7 +157,7 @@
     box-shadow: 0 0 15px rgba(166, 124, 0, 0.6);
 }
 
-/* Indicadores (Puntos) */
+/* Indicadores */
 .areas-showcase__indicators {
     display: flex;
     gap: 12px;
@@ -179,7 +172,7 @@
     background-color: #333;
     border-radius: 50%;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease; /* Solo animamos color */
     border: 1px solid transparent;
 }
 
@@ -187,18 +180,21 @@
 
 .indicator-dot--active {
     background-color: var(--jaguar-gold, #A67C00);
-    box-shadow: 0 0 8px var(--jaguar-gold, #A67C00);
-    transform: scale(1.2);
+    /* Quitamos sombra y escala en el punto activo para evitar repaints */
+    border-color: #FFE878; 
 }
 
-/* --- 5. RESPONSIVE / MÓVIL --- */
+/* --- 5. RESPONSIVE / MÓVIL (MODO RENDIMIENTO) --- */
 @media (max-width: 900px) {
-    /* Ocultar flechas en móvil */
     .areas-showcase__btn { display: none; }
     
-    .areas-showcase {
-        padding: 40px 0;
+    .areas-showcase__title {
+        /* Adiós filtro de sombra costoso */
+        filter: none; 
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
     }
+    
+    .areas-showcase { padding: 40px 0; }
 
     .areas-carousel {
         padding: 20px 20px;
@@ -207,11 +203,17 @@
     }
 
     .area-card {
-        /* TRUCO UX: 85vw deja ver 15% de la siguiente tarjeta */
         width: 85vw;
         max-width: 400px;
-        
         scroll-snap-align: center;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        
+        /* Sombra más ligera */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        
+        /* Eliminamos will-change para no saturar RAM */
+        will-change: auto;
     }
 }

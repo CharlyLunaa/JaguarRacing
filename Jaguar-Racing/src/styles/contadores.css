@@ -60,11 +60,19 @@
 
 /* Temporizador (Mantenemos .countdown-timer) */
 .countdown-timer {
-    font-family: 'Courier New', Courier, monospace; /* Fuente técnica */
-    font-size: 1.8rem;
+    font-family: 'Courier New', monospace;
+    font-size: 1.5rem;
     font-weight: bold;
-    color: #fff;
-    text-shadow: 0 0 10px rgba(166, 124, 0, 0.5);
+    color: white;
+
+    font-variant-numeric: tabular-nums; 
+    
+    /* 2. AISLAMIENTO DE RENDIMIENTO (CRÍTICO) 
+    contain: content;
+    
+    /* 3. Definir un ancho mínimo evita saltos si carga tarde */
+    min-width: 240px; 
+    display: inline-block;
 }
 
 /* =============================================================================

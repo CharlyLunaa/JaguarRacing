@@ -1,5 +1,5 @@
 /* =============================================================================
-   ROSTER / EQUIPO JAGUAR - ESTILO "GOLDEN STANDARD" (FIXED & BLINDADO)
+   ROSTER / EQUIPO JAGUAR - OPTIMIZADO v4.0 (Virtualización Nativa)
    ============================================================================= */
 
 .roster-container {
@@ -8,9 +8,10 @@
     text-align: center;
     position: relative;
     width: 100%;
-    
-    /* CORRECCIÓN DEL BUG: Esto corta cualquier elemento que intente salirse a la derecha */
     overflow: hidden; 
+    
+    /* Aísla el cálculo de layout de esta sección del resto de la página */
+    contain: content; 
 }
 
 .roster-main-title {
@@ -24,10 +25,9 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     
-    /* Sombra contenida para evitar desbordes */
+    /* Sombra optimizada */
     filter: drop-shadow(0 4px 5px rgba(0,0,0,0.8)); 
     
-    /* Asegura que el texto largo no rompa el ancho */
     max-width: 100%;
     overflow-wrap: break-word;
 }
@@ -35,7 +35,9 @@
 /* --- CATEGORÍAS --- */
 .roster-category {
     margin-bottom: 80px;
-    width: 100%; /* Asegura que no sea más ancho que el padre */
+    width: 100%; 
+    /* Otra capa de aislamiento para que cada categoría se renderice independiente */
+    contain: layout;
 }
 
 .roster-category__title {
@@ -50,8 +52,6 @@
     text-transform: uppercase;
     margin-bottom: 40px;
     letter-spacing: 1px;
-    
-    /* Evita desborde en pantallas muy angostas */
     flex-wrap: wrap; 
     text-align: center;
 }
@@ -62,31 +62,24 @@
     background-color: var(--jaguar-dark-gold);
     display: block;
     opacity: 0.7;
-    flex-shrink: 0; /* Evita que la línea desaparezca */
+    flex-shrink: 0;
 }
 
-/* --- GRID SYSTEM (LÓGICA HÍBRIDA) --- */
+/* --- GRID SYSTEM --- */
 .roster-grid {
-    /* PC: Flexbox centrado */
     display: flex;
     flex-wrap: wrap;       
     justify-content: center;
     gap: 30px;
-    
-    /* CORRECCIÓN: Definir ancho explícito */
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
-    
-    /* Evita que los márgenes negativos del grid rompan el layout */
     box-sizing: border-box;
 }
 
-/* --- TARJETA DE MIEMBRO --- */
+/* --- TARJETA DE MIEMBRO (OPTIMIZADA) --- */
 .member-card {
     background-color: #080808; 
-    
-    /* ESTADO PERMANENTE (SIEMPRE ILUMINADO) */
     border: 1px solid var(--jaguar-gold); 
     border-radius: 4px; 
     box-shadow: 0 0 15px rgba(166, 124, 0, 0.15); 
@@ -97,11 +90,16 @@
     align-items: center;
     padding-bottom: 25px;
     
-    /* Tamaño fijo en PC */
     width: 260px; 
-    /* Importante: permite que se encoja si la pantalla es menor a 260px (muy raro pero posible) */
     max-width: 100%; 
     flex-shrink: 0;
+
+    /* --- MAGIA DE RENDIMIENTO --- */
+    /* 1. Si no está en pantalla, no se renderiza (ahorra RAM masivamente) */
+    content-visibility: auto; 
+    
+    /* 2. Le decimos al navegador cuánto mide aprox para que el scroll no salte */
+    contain-intrinsic-size: 260px 400px; 
 }
 
 /* --- FOTO DEL MIEMBRO --- */
@@ -119,7 +117,10 @@
     object-fit: contain; 
     padding: 20px;       
     opacity: 1; 
-    display: block; /* Elimina espacios fantasma inline */
+    display: block;
+    
+    /* Evita repintados complejos en la imagen */
+    will-change: transform; 
 }
 
 /* --- INFO TEXTUAL --- */
@@ -165,12 +166,13 @@
     align-items: center;
     padding: 6px;
     border-radius: 4px;
-    transition: background 0.3s;
+    transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .member-card__social:hover {
     background-color: var(--jaguar-gold);
     color: #000;
+    transform: translateY(-2px); /* Pequeño feedback visual */
 }
 
 /* --- RESPONSIVE (MÓVIL 2 COLUMNAS) --- */
@@ -186,20 +188,19 @@
         word-break: break-word; 
     }
 
-    /* === AQUÍ ESTÁ EL ARREGLO DEL TÍTULO "LÍDERES" === */
+    /* Ajuste Títulos */
     .roster-category__title {
-        font-size: 1.2rem;   /* Reducimos la fuente (antes 1.8rem) */
-        gap: 8px;            /* Acercamos las líneas al texto */
+        font-size: 1.2rem;   
+        gap: 8px;            
         margin-bottom: 25px; 
-        width: 100%;         /* Asegura centrado */
-        flex-wrap: nowrap;   /* Intenta mantenerlo en una línea */
+        width: 100%;         
+        flex-wrap: nowrap;   
     }
 
     .gold-line {
-        width: 20px;         /* Líneas mucho más cortas (antes 60px) */
+        width: 20px;        
         opacity: 0.6;
     }
-    /* ================================================= */
     
     .roster-grid {
         display: grid; 
@@ -214,6 +215,9 @@
         max-width: none;
         border-radius: 2px;
         padding-bottom: 12px;
+        
+        /* Ajustamos la estimación de tamaño para móvil */
+        contain-intrinsic-size: 160px 250px; 
     }
 
     .member-card__img-box img {
