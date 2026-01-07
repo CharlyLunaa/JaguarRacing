@@ -43,7 +43,6 @@ import '../styles/widget_chat.css';
         const chatMessages = document.getElementById('chat-messages');
         const typingIndicator = document.getElementById('typing-indicator');
 
-        // Verificación de seguridad
         if (!trigger || !chatWindow || !chatMessages || !input || !sendBtn) return;
 
         // --- FUNCIONES CORE ---
@@ -56,10 +55,29 @@ import '../styles/widget_chat.css';
             if (show) scrollAlFondo();
         };
 
+        // ✨ NUEVA FUNCIÓN: Detecta links y los hace clicables
+        const formatearTexto = (texto) => {
+            // 1. Regex para detectar URLs (http o https)
+            const urlRegex = /(https?:\/\/[^\s]+)/g;
+            
+            // 2. Reemplazamos la URL por una etiqueta <a>
+            // Agregamos target="_blank" para que abra en otra pestaña
+            // Agregamos estilos inline para asegurar que se vea dorado/azul
+            return texto.replace(urlRegex, (url) => {
+                // Quitamos puntos o comas finales si se colaron en la detección
+                const cleanUrl = url.replace(/[.,;]$/, ''); 
+                return `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" class="chat-link">${cleanUrl}</a>`;
+            });
+        };
+
         const agregarMensaje = (texto, clase, guardar = false) => {
             const div = document.createElement('div');
             div.className = `chat-message ${clase}`;
-            div.innerText = texto;
+            
+            // ⚠️ CAMBIO CRÍTICO: Usamos innerHTML en lugar de innerText
+            // para que el enlace funcione. Pasamos el texto por la función formatear.
+            div.innerHTML = formatearTexto(texto);
+            
             chatMessages.appendChild(div);
             scrollAlFondo();
 
@@ -74,23 +92,22 @@ import '../styles/widget_chat.css';
             const texto = input.value.trim();
             if (!texto) return;
 
-            // Generar o recuperar ID de usuario
             let userId = localStorage.getItem('jaguar_user_id');
             if (!userId) {
                 userId = crypto.randomUUID?.() || Math.random().toString(36).substring(2);
                 localStorage.setItem('jaguar_user_id', userId);
             }
 
-            // --- 1. BLOQUEAR INPUT Y BOTÓN (Aquí está la magia en JS puro) ---
             input.disabled = true;
             sendBtn.disabled = true; 
             sendBtn.classList.add('chat-input__send--disabled');
 
+            // El usuario manda texto plano, no necesita formato de links
             agregarMensaje(texto, 'chat-message--user', true);
+            
             input.value = '';
             mostrarTyping(true);
 
-            // Contexto para la IA
             const historial = JSON.parse(sessionStorage.getItem('jaguar_chat_history') || '[]');
             const messages = historial.slice(-6).map((m) => ({
                 role: m.remitente === 'user' ? 'user' : 'assistant',
@@ -106,12 +123,12 @@ import '../styles/widget_chat.css';
 
                 const data = await response.json();
                 mostrarTyping(false);
+                // El bot SÍ necesita formato de links
                 agregarMensaje(data.content || "Lo siento, tuve un problema técnico.", 'chat-message--bot', true);
             } catch (error) {
                 mostrarTyping(false);
                 agregarMensaje("Error de conexión. Intenta de nuevo.", 'chat-message--bot');
             } finally {
-                // --- 2. DESBLOQUEAR TODO AL TERMINAR ---
                 input.disabled = false;
                 sendBtn.disabled = false;
                 sendBtn.classList.remove('chat-input__send--disabled');
@@ -145,7 +162,6 @@ import '../styles/widget_chat.css';
 
         // --- INICIALIZACIÓN ---
         chatMessages.innerHTML = '';
-        
         const historial = JSON.parse(sessionStorage.getItem('jaguar_chat_history') || '[]');
         historial.forEach((m) => {
             agregarMensaje(m.texto, m.remitente === 'user' ? 'chat-message--user' : 'chat-message--bot', false);
