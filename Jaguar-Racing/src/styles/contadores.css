@@ -1,0 +1,86 @@
+/* =============================================================================
+   SECCIÓN PRÓXIMAS PARTICIPACIONES (Eventos) - v3.0 (Refactor BEM)
+   ============================================================================= */
+
+/* Contenedor Principal */
+.events-section {
+    padding: 5rem 1rem;
+    background-color: #050505; /* Consistencia con fondo industrial */
+    text-align: center;
+}
+
+/* Título (Mantenemos la clase del HTML .titulo-participaciones) */
+.titulo-participaciones {
+    font-family: 'Arial Black', sans-serif;
+    font-size: 2.5rem;
+    color: #fff;
+    text-transform: uppercase;
+    margin-bottom: 4rem;
+    letter-spacing: 2px;
+}
+
+/* Rejilla de Eventos (Antes .grid-eventos) */
+.events-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Tarjeta Individual (Antes .tarjeta-evento) */
+.event-card {
+    display: flex;
+    align-items: center;
+    background: rgba(166, 124, 0, 0.05);
+    border: 1px solid rgba(166, 124, 0, 0.2);
+    padding: 20px;
+    gap: 20px;
+}
+
+/* Imagen del Evento (Antes .img-evento) */
+.event-card__img {
+    width: 120px;
+    height: auto;
+    filter: brightness(0.8) contrast(1.2);
+}
+
+/* Información y Texto (Antes .info-contador) */
+.event-card__info {
+    text-align: left;
+    flex-grow: 1;
+}
+
+.event-card__info h3 {
+    color: #FFE878; /* O podrías usar var(--jaguar-gold) */
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+/* Temporizador (Mantenemos .countdown-timer) */
+.countdown-timer {
+    font-family: 'Courier New', Courier, monospace; /* Fuente técnica */
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(166, 124, 0, 0.5);
+}
+
+/* =============================================================================
+   RESPONSIVIDAD MÓVIL
+   ============================================================================= */
+@media (max-width: 768px) {
+    .events-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .event-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .event-card__info {
+        text-align: center;
+    }
+}

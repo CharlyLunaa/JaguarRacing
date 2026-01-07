@@ -1,0 +1,292 @@
+/* =============================================================================
+   JAGUAR RACING - PATROCINIOS v3.1 (Static Images / Siempre Coloridos)
+   ============================================================================= */
+
+:root {
+    /* Variables locales mapeadas a globales */
+    --gold-light: #FFE878;
+    --gold-dark: var(--jaguar-gold, #A67C00);
+    --bg-dark: var(--bg-black, #050505);
+    
+    --card-bg: rgba(20, 20, 20, 0.6);
+    --card-border: rgba(255, 255, 255, 0.1);
+}
+
+/* --- SECCIÓN PRINCIPAL (.sponsors-section) --- */
+.sponsors-section {
+    background: radial-gradient(circle at top, #1a1a1a 0%, #000 100%);
+    min-height: 100vh;
+    padding: 80px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* --- INTRODUCCIÓN (.sponsors-intro) --- */
+.sponsors-intro {
+    text-align: center;
+    max-width: 800px;
+    margin-bottom: 80px;
+}
+
+/* Título Dorado */
+.sponsors-intro__title {
+    font-family: 'Impact', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    
+    background: linear-gradient(135deg, #fff 0%, var(--gold-light) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 1px;
+}
+
+/* Texto */
+.sponsors-intro__text p {
+    color: #ccc;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+/* =============================================================================
+   BOTÓN DOSSIER - ESTILO "GLASS HUD" (Premium & Ligero)
+   Diseño único: Cristal translúcido con detalles dorados finos.
+   ============================================================================= */
+
+.dossier-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    
+    margin-top: 40px;
+    padding: 12px 35px; /* Más delgado y elegante */
+    
+    /* ESTILO CRISTAL (GLASSMORPHISM) */
+    background: rgba(255, 232, 120, 0.03); /* Fondo casi invisible */
+    border: 1px solid rgba(255, 232, 120, 0.3); /* Borde fino y sutil */
+    border-radius: 50px; /* Redondo (Pill shape) para suavidad */
+    backdrop-filter: blur(8px); /* Efecto de cristal borroso */
+    
+    text-decoration: none;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    z-index: 10;
+    
+    /* Sombra de luz suave */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    
+    /* UX Móvil */
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+/* --- ICONO --- */
+.dossier-btn__icon {
+    width: 24px; 
+    height: 24px;
+    color: var(--gold-light);
+    transition: transform 0.3s ease, filter 0.3s ease;
+    /* Efecto de luz propia en el icono */
+    filter: drop-shadow(0 0 5px rgba(255, 232, 120, 0.4));
+}
+
+.dossier-btn__icon svg {
+    width: 100%; height: 100%; fill: currentColor;
+}
+
+/* --- TEXTO --- */
+.dossier-btn__content {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.dossier-btn__title {
+    font-family: var(--font-main, sans-serif); /* Fuente limpia */
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(166, 124, 0, 0.5); /* Texto brillante */
+}
+
+.dossier-btn__subtitle {
+    font-size: 0.75rem;
+    color: #888;
+    font-weight: 400;
+    margin-top: 2px;
+    letter-spacing: 1px;
+    transition: color 0.3s;
+}
+
+/* --- HOVER (PC) --- */
+@media (hover: hover) {
+    .dossier-btn:hover {
+        background: rgba(255, 232, 120, 0.1); /* Se ilumina un poco el cristal */
+        border-color: var(--gold-light); /* Borde brilla al máximo */
+        box-shadow: 0 0 25px rgba(166, 124, 0, 0.3), inset 0 0 10px rgba(255, 232, 120, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .dossier-btn:hover .dossier-btn__icon {
+        transform: scale(1.1) rotate(-10deg);
+        filter: drop-shadow(0 0 8px rgba(255, 232, 120, 0.8));
+    }
+    
+    .dossier-btn:hover .dossier-btn__subtitle {
+        color: #fff; /* Subtítulo se vuelve blanco */
+    }
+}
+
+/* --- ACTIVE (TOUCH FEEDBACK) --- */
+.dossier-btn:active {
+    transform: scale(0.96);
+    background: rgba(255, 232, 120, 0.15);
+    border-color: var(--gold-dark);
+}
+
+/* --- RESPONSIVE UX (LA CLAVE) --- */
+@media (max-width: 600px) {
+    .dossier-btn {
+        width: 90%; /* Ancho cómodo pero no total */
+        max-width: 320px;
+        padding: 15px 20px;
+        justify-content: center; /* Centrado perfecto */
+        background: rgba(255, 232, 120, 0.05); /* Un poco más visible en móvil */
+        border: 1px solid var(--gold-light); /* Borde sólido para visibilidad */
+    }
+
+    /* LIMPIEZA VISUAL MÓVIL */
+    .dossier-btn__subtitle {
+        display: none; /* ¡ELIMINAMOS EL RUIDO! Solo título importante */
+    }
+    
+    .dossier-btn__title {
+        font-size: 1.1rem; /* Texto un poco más grande */
+    }
+    
+    .dossier-btn__content {
+        align-items: center; /* Asegura alineación */
+    }
+}
+
+/* --- GRID DE PATROCINADORES (.sponsors-grid) --- */
+.sponsors-grid-wrapper {
+    width: 100%;
+    max-width: 1200px;
+}
+
+.sponsors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 10px;
+}
+
+/* --- ANIMACIÓN DEL HALO (RESPIRACIÓN) --- */
+@keyframes goldenPulse {
+    0% {
+        border-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 0 rgba(0,0,0,0);
+        background: rgba(20, 20, 20, 0.6);
+    }
+    50% {
+        border-color: var(--gold-light);
+        box-shadow: 0 10px 30px rgba(166, 124, 0, 0.2), 0 0 15px rgba(255, 232, 120, 0.1);
+        background: rgba(30, 30, 30, 0.8);
+    }
+    100% {
+        border-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 0 rgba(0,0,0,0);
+        background: rgba(20, 20, 20, 0.6);
+    }
+}
+
+/* TARJETA INDIVIDUAL (.sponsor-card) */
+.sponsor-card {
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    aspect-ratio: 16/9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    
+    /* Animación infinita del borde/fondo */
+    animation: goldenPulse 4s ease-in-out infinite;
+    
+    /* Entrada inicial (Slide Up) */
+    opacity: 0;
+    animation-name: fadeUp, goldenPulse; /* Ejecuta ambas */
+    animation-duration: 0.8s, 4s;
+    animation-delay: 0s, 0.8s;
+    animation-fill-mode: forwards, none;
+    animation-iteration-count: 1, infinite;
+}
+
+/* --- DESFASE DE TIEMPOS --- */
+.sponsor-card:nth-child(odd) { animation-delay: 0s, 0s; }
+.sponsor-card:nth-child(even) { animation-delay: 0.1s, 2s; }
+.sponsor-card:nth-child(3n) { animation-delay: 0.2s, 1s; }
+.sponsor-card:nth-child(4n) { animation-delay: 0.3s, 3s; }
+
+/* Wrapper de Imagen (.sponsor-card__img-box) */
+.sponsor-card__img-box {
+    width: 80%; height: 70%;
+    display: flex; justify-content: center; align-items: center;
+}
+
+.sponsor-card__img-box img {
+    max-width: 100%; max-height: 100%;
+    object-fit: contain;
+    
+    /* MODIFICACIÓN: Siempre brillosa y colorida, sin transición */
+    filter: brightness(1.1) contrast(1.1);
+}
+
+/* TARJETA "TU LOGO AQUÍ" (.sponsor-card--cta) */
+.sponsor-card--cta {
+    border: 2px dashed rgba(166, 124, 0, 0.3);
+    background: transparent;
+    cursor: pointer;
+    animation: none; /* Esta no pulsa, es estática */
+}
+
+/* Contenido CTA */
+.sponsor-card__cta-content {
+    text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+
+.sponsor-card__cta-content span { color: #666; font-weight: bold; font-size: 1.2rem; }
+.sponsor-card__link { color: var(--gold-light); text-decoration: none; font-size: 0.9rem; }
+
+.sponsor-card--cta:hover {
+    border-color: var(--gold-light);
+    background: rgba(166, 124, 0, 0.05);
+}
+.sponsor-card--cta:hover span { color: #fff; }
+
+/* Animación de Entrada */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* MÓVIL */
+@media (max-width: 768px) {
+    .sponsors-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    .sponsor-card {
+        aspect-ratio: 1/1;
+        padding: 10px;
+    }
+}

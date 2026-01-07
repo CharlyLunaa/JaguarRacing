@@ -1,0 +1,50 @@
+---
+import { ClientRouter } from 'astro:transitions';
+
+// --- ESTILOS GLOBALES ---
+import '../styles/global.css'; 
+import '../styles/NoSelect.css';
+import '../styles/widget_chat.css'; 
+
+import ChatWidget from '../components/ChatWidget.astro';
+// Importa el Header aquí para que esté en todas las páginas
+import Header from '../components/Header.astro';
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+		
+		<ClientRouter />
+
+		<title>{title}</title>
+	</head>
+	<body>
+		
+		<Header transition:persist />
+
+		<main>
+			<slot />
+		</main>
+
+		<ChatWidget transition:persist />
+
+	</body>
+
+	<script>
+  // Carga pesada solo cuando el navegador esté libre
+  window.addEventListener('load', () => {
+    // Aquí puedes disparar eventos secundarios
+  });
+</script>
+</html>

@@ -1,0 +1,125 @@
+/* =============================================================================
+   CARRUSEL PATROCINADORES - ESTILO "CLEAN & PRO" v3.0 (Refactor BEM)
+   ============================================================================= */
+
+/* Contenedor Principal */
+.sponsors-section {
+    padding: 80px 0;
+    /* Fondo oscuro sólido o degradado muy sutil para contraste */
+    background: linear-gradient(to bottom, #050505, #111111);
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    
+    /* Optimización de renderizado */
+    content-visibility: auto;
+    contain-intrinsic-size: 400px;
+}
+
+/* Título de Sección */
+.titulo-seccion {
+    text-align: center;
+    font-family: 'Impact', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    color: #fff;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    
+    /* El mismo dorado que usamos en los otros títulos */
+    background: linear-gradient(135deg, #A67C00 20%, #FFE878 50%, #A67C00 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 0px rgba(0,0,0,0.5));
+}
+
+/* Descripción */
+.sponsors-section__desc {
+    max-width: 800px;
+    margin: 0 auto 50px auto;
+    text-align: center;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #cccccc;
+    padding: 0 20px;
+}
+
+/* Pista de deslizamiento  */
+.sponsors-marquee {
+    display: flex;
+    gap: 40px; /* Espacio entre tarjetas */
+    width: max-content;
+    will-change: transform;
+    animation: desplazamiento 40s linear infinite; /* Velocidad suave */
+}
+
+/* Tarjetas Individuales */
+.sponsor-card {
+    flex-shrink: 0;
+    width: 400px; /* Coincide con el width del HTML */
+    height: 300px; /* Coincide con el height del HTML */
+    
+    /* Fondo oscuro pero diferente al body para resaltar */
+    background: #0f0f0f;
+    
+    /* Borde sutil FIJO (sin hover) que marca la identidad Jaguar */
+    border: 1px solid rgba(166, 124, 0, 0.15); 
+    border-radius: 12px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px; /* Margen interno para que el logo no toque los bordes */
+    
+    /* Sombra estática suave y optimizada */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    
+    /* Aislamiento GPU para evitar lag */
+    transform: translate3d(0,0,0);
+}
+
+/* Imagen del logo */
+.sponsor-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Asegura que el logo entero se vea sin cortes */
+    
+    /* ESTADO NATURAL: 100% Visible y a color */
+    opacity: 1;
+    filter: none;
+    
+    /* Eliminamos transiciones innecesarias */
+    transition: none;
+    
+    /* Evita que el usuario pueda arrastrar la imagen (mejor experiencia táctil) */
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Contenedor del botón (Antes usabas <center>, ahora es clase .center-content) */
+.center-content {
+    margin-top: 50px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+/* Animación */
+@keyframes desplazamiento {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* Ajuste Mobile */
+@media (max-width: 768px) {
+    .sponsor-card {
+        /* En celular las tarjetas pueden ser un poco más pequeñas */
+        width: 300px; 
+        height: 200px;
+    }
+    
+    /* Ajustamos el gap para que no se vean tan separadas en móvil */
+    .sponsors-marquee {
+        gap: 20px;
+    }
+}

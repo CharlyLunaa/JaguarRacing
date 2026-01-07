@@ -1,0 +1,104 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+
+// Importación de estilos externos
+import '../styles/trayectoria.css';
+import '../styles/NoSelect.css';
+
+const pageTitle = "Nuestra Trayectoria | Jaguar Racing";
+---
+
+<Layout title={pageTitle}>
+
+    <main>
+        <div class="hero">
+            <img 
+                src="/img/page/Trayectoria.webp" 
+                alt="Trayectoria en Baja SAE" 
+                class="hero__image" 
+                fetchpriority="high" 
+                decoding="sync"
+                loading="eager"
+                width="1200"
+                height="627"
+            />
+            <h1 class="hero__title">Nuestra trayectoria</h1>
+        </div>
+
+        <section class="history-section">
+            <div class="history-timeline">
+                
+                <div class="timeline-event timeline-event--left">
+                    <div class="timeline-event__content">
+                        <span class="timeline-event__year">2025</span>
+                        <h3 class="timeline-event__title">Próximas Competencias</h3>
+                        <ul class="timeline-event__list">
+                            <li>All Terrain 2025 <span class="timeline-event__detail">(UPSRJ)</span></li>
+                            <li>BAJA SAE México 2025</li>
+                            <li>BAJA SAE Carolina 2025</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-event timeline-event--right">
+                    <div class="timeline-event__content">
+                        <span class="timeline-event__year">2022</span>
+                        <img src="/img/IMGTrayectoria/h1.webp" alt="Victorias 2022" class="timeline-event__img" 
+                             loading="lazy" decoding="async" width="500" height="300">
+                        <h3 class="timeline-event__title">Victorias</h3>
+                        <ul class="timeline-event__list">
+                            <li class="timeline-event__highlight">🥇 1er Lugar General <span class="timeline-event__detail">All Terrain Vehicle Design Challenge</span></li>
+                            <li class="timeline-event__highlight">🥈 2do Lugar <span class="timeline-event__detail">Suspensión y Tracción (BAJA SAE México)</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-event timeline-event--left">
+                    <div class="timeline-event__content">
+                        <span class="timeline-event__year">2021</span>
+                        <img src="/img/IMGTrayectoria/h2.webp" alt="Finalistas 2021" class="timeline-event__img" 
+                             loading="lazy" decoding="async" width="500" height="300">
+                        <h3 class="timeline-event__title">Finalistas</h3>
+                        <p>Finalistas en <strong>Reducción de Costos</strong> <span class="timeline-event__detail">(BAJA SAE México)</span></p>
+                    </div>
+                </div>
+
+                <div class="timeline-event timeline-event--right apple-scroll">
+                    <div class="timeline-event__content">
+                        <span class="timeline-event__year">2020</span>
+                        <img src="/img/IMGTrayectoria/h3.webp" alt="Doble Finalista 2020" class="timeline-event__img" 
+                             loading="lazy" decoding="async" width="500" height="300">
+                        <h3 class="timeline-event__title">Doble Finalista</h3>
+                        <ul class="timeline-event__list">
+                            <li>Finalistas en <strong>Prueba de Diseño</strong></li>
+                            <li>Finalistas en <strong>Marketing</strong> <span class="timeline-event__detail">(BAJA SAE México)</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-event timeline-event--left apple-scroll">
+                    <div class="timeline-event__content">
+                        <span class="timeline-event__year">2019</span>
+                        <img src="/img/IMGTrayectoria/h4.webp" alt="Campeones 2019" class="timeline-event__img" 
+                             loading="lazy" decoding="async" width="500" height="300">
+                        <h3 class="timeline-event__title">Campeones</h3>
+                        <p class="timeline-event__highlight">🥇 1er Lugar en Marketing <span class="timeline-event__detail">(BAJA SAE México)</span></p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <Footer />
+</Layout>
+
+<style>
+    /* Optimizaciones de renderizado */
+    .timeline-event {
+        content-visibility: auto; 
+        contain-intrinsic-size: 500px;
+        will-change: transform, opacity;
+    }
+</style>

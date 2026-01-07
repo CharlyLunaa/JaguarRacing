@@ -1,0 +1,134 @@
+/* =============================================================================
+   SECCIÓN DE REGISTRO & BOTÓN TEAMS - v3.1 (Industrial Block Clean)
+   ============================================================================= */
+
+/* Contenedor Principal (.registration-cta) */
+.registration-cta {
+    padding: 80px 20px;
+    background-color: var(--bg-black, #000);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    
+    /* Fondo técnico limpio */
+    background-image: radial-gradient(#222 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.registration-cta__content {
+    max-width: 800px;
+    width: 100%;
+    /* Centramos el contenido flex para asegurar alineación del botón */
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+
+/* Título */
+.registration-cta__title {
+    font-family: 'Impact', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    color: var(--text-white, #fff);
+    letter-spacing: 1px;
+}
+
+/* Descripción */
+.registration-cta__desc {
+    font-size: 1.2rem;
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
+
+/* Nota inferior */
+.registration-cta__note {
+    margin-top: 25px;
+    font-size: 0.9rem;
+    color: #666;
+    font-style: italic;
+}
+
+/* --- BOTÓN DE TEAMS / CONVOCATORIA (.teams-btn) --- */
+/* Estilo Industrial Block: Sólido, Ancho y Directo */
+.teams-btn {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Espacio entre texto e icono */
+    
+    /* TAMAÑO Y FORMA */
+    width: 100%;       /* Ancho completo en móvil */
+    max-width: 400px;  /* Límite en PC para que no sea ridículamente ancho */
+    padding: 18px 30px;
+    
+    /* ESTILO VISUAL */
+    background-color: #000; /* Fondo Negro Sólido */
+    border: 2px solid var(--jaguar-gold, #FFE878);
+    border-radius: 0; /* Cuadrado perfecto */
+    
+    /* TIPOGRAFÍA */
+    color: var(--jaguar-gold, #FFE878);
+    font-family: var(--font-main, sans-serif);
+    font-weight: 800; /* Letra gruesa */
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: 1px;
+    
+    /* INTERACCIÓN */
+    cursor: pointer;
+    transition: all 0.2s ease-out;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ICONO (Simplificado y Limpio) */
+.teams-btn__icon {
+    width: 24px;
+    height: 24px;
+    /* Usamos el color actual del texto (dorado o negro) */
+    fill: currentColor; 
+    transition: transform 0.3s;
+}
+
+/* --- ESTADO ACTIVE (Feedback Táctil) --- */
+.teams-btn:active {
+    background-color: var(--jaguar-gold, #FFE878); /* Se llena de dorado */
+    color: #000; /* Texto negro */
+    transform: scale(0.97); /* Presión física */
+}
+
+/* --- ESTADO HOVER (Solo PC) --- */
+@media (hover: hover) {
+    .teams-btn:hover {
+        background-color: rgba(255, 232, 120, 0.1); 
+        box-shadow: 0 0 20px rgba(166, 124, 0, 0.4);
+        transform: translateY(-2px);
+    }
+    
+    .teams-btn:hover .teams-btn__icon {
+        transform: translateX(5px); /* El icono se mueve un poco a la derecha */
+    }
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 600px) {
+    .registration-cta {
+        padding: 60px 15px;
+    }
+    
+    .registration-cta__title {
+        font-size: 2.5rem;
+    }
+    
+    .teams-btn {
+        /* En móvil aseguramos que sea una barra sólida fácil de tocar */
+        width: 100%;
+        font-size: 1rem;
+        padding: 20px 0; /* Alto generoso */
+    }
+}

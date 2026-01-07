@@ -1,0 +1,191 @@
+---
+// --- ZONA DE LÓGICA (Server Side) ---
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+
+// 1. Importamos los CSS específicos de esta página
+// Astro los fusionará y cargará rápido, sin necesidad del truco de "media=print"
+import '../styles/indexCuerpo.css';
+import '../styles/carruselPatrocinios.css';
+import '../styles/apoyanosbtn.css';
+import '../styles/marcoConocenos.css';
+import '../styles/contadores.css';
+import '../styles/miniJuego.css';
+import '../styles/NoSelect.css';
+
+const pageTitle = "Inicio | Jaguar Racing";
+const pageDesc = "Jaguar Racing: Escudería oficial de ESIME Azcapotzalco (IPN).";
+
+// 2. Tu Array de Patrocinadores (Convertido a JS puro)
+const patrocinadores = [
+  'altair.webp', 'ansys.webp', 'bimsa.webp', 'copiisa.webp', 
+  'mantemimiento.webp', 'polimex.webp', 'SMI.webp', 
+  'solidwor.webp', 'tmx.webp', 'toyota.webp', 'IPN.webp'
+];
+---
+
+<Layout title={pageTitle}>
+
+    <main>
+        <div class="hero">
+            <img 
+                src="/img/page/Portada.webp" 
+                alt="Jaguar Racing Portada" 
+                class="hero__image" 
+                fetchpriority="high"
+                decoding="sync" 
+                loading="eager" 
+                width="1358" 
+                height="602"
+            />
+            <h1 class="hero__title">Jaguar Racing</h1>
+        </div>
+
+        <div class="about-section">
+            <img src="/img/page/ImgIPN.webp" class="about-section__logo" alt="Escudo IPN" loading="lazy" decoding="async" width="200" height="200">
+            <div class="about-section__content">
+                <h2>¿Quiénes somos?</h2>
+                <p>Somos una escudería universitaria del INSTITUTO POLITÉCNICO NACIONAL apasionada por la ingeniería y
+                    las competencias, buscando consolidar y posicionar al equipo como una escudería líder en el mundo
+                    BAJA, representando y poniendo en alto nuestra escuela y el instituto por medio de una eficiente
+                    estructura de trabajo.</p>
+            </div>
+        </div>
+
+        <div class="about-section">
+            <img src="/img/page/ImgBajaSae.webp" class="about-section__logo" alt="Baja SAE" loading="lazy" decoding="async" width="200" height="200">
+            <div class="about-section__content">
+                <h2>¿Qué es BAJA SAE?</h2>
+                <p>Baja SAE desafía a los estudiantes de ingeniería a diseñar y construir un vehículo todoterreno que
+                    sobreviva al severo castigo del terreno accidentado y, en algunas competencias, al agua. El objetivo
+                    de cada equipo es diseñar y construir un prototipo de un vehículo recreativo todoterreno, robusto,
+                    de un solo asiento y apto para todo tipo de clima.</p>
+            </div>
+        </div>
+
+        <div class="about-section">
+            <div class="about-section__content">
+                <p>SAE International es una asociación mundial comprometida con ser la principal fuente de conocimiento
+                    para la profesión de ingeniería. Al unir a más de 145,000 ingenieros y expertos técnicos, impulsamos
+                    el conocimiento y la experiencia en un amplio espectro de industrias.</p>
+            </div>
+            <img src="/img/page/ImgSAE.webp" class="about-section__logo" alt="SAE Internacional" loading="lazy" decoding="async" width="200" height="200">
+        </div>
+
+        <div class="join-cta">
+            <div class="join-cta__text">
+                <h2>ÚNETE A<br>NUESTRO<br>EQUIPO</h2>
+                <p>Abierto a todas las carreras y semestres que curses. Jaguar Racing te prepara para un mejor
+                    rendimiento fuera y dentro de las aulas.</p>
+                <a href="/convocatoria" class="boton-registro">REGISTRARME</a>
+            </div>
+        </div>
+
+        <div class="sponsors-section">
+            <h2 class="titulo-seccion">Patrocinadores</h2>
+            <p class="sponsors-section__desc">
+                Múltiples empresas han donado generosamente tiempo, dinero o materiales al equipo, por lo cual
+                    estamos, y siempre estaremos, muy agradecidos.
+                    Somos un equipo 100% universitario y sin fines de lucro, por lo que dependemos completamente de la
+                    financiación de patrocinadores. Si a usted o a su empresa le interesa el proyecto, le invitamos a
+                    considerar apoyarnos.
+            </p>
+
+            <div class="sponsors-marquee">
+                {patrocinadores.map((img) => (
+                    <div class="sponsor-card">
+                        <img 
+            src={`/img/IMGpatrocinadores/${img}`} 
+            alt="Patrocinador" 
+            width="200" 
+            height="100" 
+            loading="lazy" 
+            decoding="async" 
+        />
+                    </div>
+                ))}
+                {patrocinadores.map((img) => (
+                    <div class="sponsor-card">
+                        <img 
+            src={`/img/IMGpatrocinadores/${img}`} 
+            alt="Patrocinador" 
+            width="200" 
+            height="100" 
+            loading="lazy" 
+            decoding="async" 
+        />
+                        </div>
+                ))}
+            </div>
+
+            <div class="center-content">
+                <a href="/Patrocinios" class="boton-legendario">APÓYANOS</a>
+            </div>
+        </div>
+
+        <div class="team-showcase">
+            <h2 class="team-showcase__title">SOMOS JAGUAR RACING</h2>
+            <p class="team-showcase__subtitle">Pasión y manufactura en la ESIME Azcapotzalco</p>
+            <div class="marco-halo-container">
+                <div class="bracket top-left"></div>
+                <div class="bracket bottom-right"></div>
+                <div class="halo-inner-shadow">
+                    <img src="/img/Conocenos/7.webp" alt="Equipo Jaguar Racing" class="foto-equipo-cad" loading="lazy" width="500" height="300">
+                </div>
+            </div>
+            <div class="acciones-equipo">
+                <a href="/equipo" class="btn-tech"><span>Conocer Equipo</span></a>
+                <a href="https://www.instagram.com/jaguar_racing_team/" target="_blank" class="btn-tech"><span>Instagram</span></a>
+            </div>
+        </div>
+
+        <section class="events-section">
+            <h2 class="titulo-participaciones">CRONOGRAMA OPERATIVO</h2>
+            <div class="events-grid">
+                <div class="event-card">
+                    <img src="/img/page/ImgIPN.webp" alt="IPN" class="event-card__img" width="100" height="100" loading="lazy">
+                    <div class="event-card__info">
+                        <h3>REINGRESO A TALLERES</h3>
+                        <div id="timer-usa" class="countdown-timer">00d 00h 00m</div>
+                    </div>
+                </div>
+                <div class="event-card">
+                    <div class="event-card__info">
+                        <h3>ARRANQUE DE TEMPORADA</h3>
+                        <div id="timer-mexico" class="countdown-timer">00d 00h 00m</div>
+                    </div>
+                    <img src="/img/page/JaguarLogo.webp" alt="Baja SAE" class="event-card__img" width="100" height="100" loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <section class="reaction-game-section">
+            <div class="reaction-game-container">
+                <h2 class="reaction-title">TEST DE REFLEJOS <span class="gold-text">JAGUAR</span></h2>
+                <p class="reaction-instruction">Espera a que las luces cambien a VERDE y presiona el botón.</p>
+                <div class="semaphore-board">
+                    <div class="light" id="light-1"></div>
+                    <div class="light" id="light-2"></div>
+                    <div class="light" id="light-3"></div>
+                    <div class="light" id="light-4"></div>
+                    <div class="light" id="light-5"></div>
+                </div>
+                <div id="reaction-result" class="reaction-result">0.000 ms</div>
+                <div class="stats-container">
+                    <div id="player-rank" class="rank-badge">---</div>
+                    <div class="best-time-box">RÉCORD: <span id="best-time-display">--</span></div>
+                </div>
+                <button id="reaction-btn" class="btn-race">
+                    <span class="btn-text">INICIAR MOTOR</span>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <Footer />
+
+    <script is:inline defer src="/js/miniJuego.js"></script>
+    <script is:inline defer src="/js/contadores.js"></script>
+
+</Layout>

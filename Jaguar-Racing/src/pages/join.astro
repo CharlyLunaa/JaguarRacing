@@ -1,0 +1,80 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+
+// Estilos específicos
+import '../styles/carruselAreas.css';
+import '../styles/registrobtnConvocatoria.css';
+import '../styles/NoSelect.css';
+
+const pageTitle = "Únete a la Escudería | Jaguar Racing";
+
+const areas = ['1.webp', '2.webp', '3.webp', '4.webp', '5.webp', '6.webp', '7.webp', '8.webp'];
+---
+
+<Layout title={pageTitle}>
+
+    <main>
+        <div class="hero">
+            <img 
+                src="/img/page/Convo.webp" 
+                alt="Convocatoria Jaguar Racing" 
+                class="hero__image" 
+                fetchpriority="high" 
+                decoding="sync"
+                loading="eager"
+                width="1300"
+                height="602"
+            />
+            <h1 class="hero__title">Convocatoria</h1>
+        </div>
+
+        <div class="areas-showcase">
+            <h2 class="areas-showcase__title">Áreas</h2>
+
+            <button class="areas-showcase__btn areas-showcase__btn--prev" id="btn-prev" aria-label="Anterior">&#10094;</button>
+
+            <div class="areas-carousel" id="carruselAreas">
+                {areas.map((img, index) => (
+                    <div class="area-card">
+                        <img 
+                            src={`/img/IMGAreas/${img}`} 
+                            alt="Área Jaguar Racing" 
+                            class="area-card__img"
+                            width="640"
+                            height="360"
+                            loading={index < 2 ? "eager" : "lazy"} 
+                            decoding={index < 2 ? "sync" : "async"}
+                        />
+                    </div>
+                ))}
+            </div>
+
+            <button class="areas-showcase__btn areas-showcase__btn--next" id="btn-next" aria-label="Siguiente">&#10095;</button>
+            
+            <div class="areas-showcase__indicators" id="indicadores"></div>
+        </div>
+
+        <section class="registration-cta">
+            <div class="registration-cta__content">
+                <h2 class="registration-cta__title">¿Listo para el desafío?</h2>
+                <p class="registration-cta__desc">
+                    Buscamos mentes apasionadas del IPN. No importa tu carrera, 
+                    si tienes ganas de aprender y competir, hay un lugar para ti en Jaguar Racing.
+                </p>
+                
+                <a href="https://forms.office.com/r/tuliNK" target="_blank" class="teams-btn">
+                    <span class="teams-btn__bracket"></span>
+                    FORMULARIO DE REGISTRO
+                    <span class="teams-btn__icon"></span>
+                </a>
+                
+                <p class="registration-cta__note">Al dar clic, serás redirigido al formulario oficial en Microsoft Teams.</p>
+            </div>
+        </section>
+    </main>
+
+    <Footer />
+
+    <script is:inline defer src="/js/carrusel.js"></script>
+</Layout>

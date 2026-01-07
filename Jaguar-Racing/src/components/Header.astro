@@ -1,0 +1,104 @@
+---
+// 1. Lógica para detectar la página activa automáticamente
+const pathname = new URL(Astro.url).pathname;
+
+// Función ayudante para limpiar el código del HTML
+const getActiveClass = (path) => {
+    // Maneja tanto el "/" exacto como las rutas que coinciden
+    if (path === '/' && pathname === '/') return 'nav-link--active';
+    return pathname === path ? 'nav-link--active' : '';
+};
+
+const getMobileActiveClass = (path) => {
+    if (path === '/' && pathname === '/') return 'mobile-nav__link--active';
+    return pathname === path ? 'mobile-nav__link--active' : '';
+};
+---
+
+<div class="main-navbar" id="main-navbar">
+    <div class="nav-left">
+        <a href="/">
+            <img src='/img/page/JaguarLogo.webp' class='main-navbar__logo' alt='Jaguar Racing Logo'>
+        </a>
+    </div>
+
+    <div class="main-navbar__links">
+        <a href="/" class={`nav-link ${getActiveClass('/')}`}>Inicio</a>
+        <a href="/join" class={`nav-link ${getActiveClass('/join')}`}>Convocatoria</a>
+        <a href="/team" class={`nav-link ${getActiveClass('/team')}`}>Conoce al equipo</a>
+        <a href="/history" class={`nav-link ${getActiveClass('/history')}`}>Nuestra trayectoria</a>
+        <a href="/sponsors" class={`nav-link ${getActiveClass('/sponsors')}`}>Patrocinios</a>
+    </div>
+
+    <div class="main-navbar__actions">
+        <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú">
+            <span class="nav-toggle__bar"></span>
+            <span class="nav-toggle__bar"></span>
+            <span class="nav-toggle__bar"></span>
+        </button>
+    </div>
+</div>
+
+<div class="mobile-overlay" id="mobile-overlay"></div>
+
+<nav class="mobile-nav" id="mobile-nav">
+    <button class="mobile-nav__close" id="close-nav">&times;</button>
+    
+    <div class="sidebar-content">
+        <h4 class="mobile-nav__title">Menú</h4>
+        
+        <a href="/" class={`mobile-nav__link ${getMobileActiveClass('/')}`}>Inicio</a>
+        <a href="/join" class={`mobile-nav__link ${getMobileActiveClass('/join')}`}>Convocatoria</a>
+        <a href="/team" class={`mobile-nav__link ${getMobileActiveClass('/team')}`}>Conoce al equipo</a>
+        <a href="/history" class={`mobile-nav__link ${getMobileActiveClass('/history')}`}>Nuestra trayectoria</a>
+        <a href="/sponsors" class={`mobile-nav__link ${getMobileActiveClass('/sponsors')}`}>Patrocinios</a>
+    </div>
+
+    <img src="/img/page/JaguarLogo.webp" class="sidebar-logo-bottom" alt="Logo Jaguar" style="width: 100px; margin: 20px auto; display: block; opacity: 0.5;">
+</nav>
+
+<style>
+    /* Estilos de estado activo (puedes moverlos a global.css si prefieres) */
+    .nav-link--active {
+        border-bottom: 2px solid var(--jaguar-gold) !important;
+        color: var(--jaguar-gold) !important;
+    }
+    
+    .mobile-nav__link--active {
+        color: var(--jaguar-gold) !important;
+        border-left: 3px solid var(--jaguar-gold);
+        padding-left: 10px;
+    }
+</style>
+
+<script>
+    // Este evento se dispara CADA VEZ que cambias de página con ClientRouter
+    document.addEventListener('astro:page-load', () => {
+        const hamburgerBtn = document.getElementById('nav-toggle');
+        const sidebar = document.getElementById('mobile-nav');
+        const overlay = document.getElementById('mobile-overlay');
+        const closeBtn = document.getElementById('close-nav');
+
+        function toggleMenu() {
+            if (!sidebar || !overlay) return;
+            const isOpen = sidebar.classList.toggle('mobile-nav--open');
+            overlay.classList.toggle('mobile-overlay--active');
+            document.body.style.overflow = isOpen ? 'hidden' : 'auto';
+        }
+
+        // Limpiamos eventos previos y agregamos los nuevos
+        hamburgerBtn?.addEventListener('click', toggleMenu);
+        closeBtn?.addEventListener('click', toggleMenu);
+        overlay?.addEventListener('click', toggleMenu);
+        
+        // Lógica de Scroll
+        window.addEventListener("scroll", function () {
+            const menu = document.getElementById("main-navbar");
+            if (menu) {
+                window.scrollY > 50 
+                    ? menu.classList.add("main-navbar--scrolled") 
+                    : menu.classList.remove("main-navbar--scrolled");
+            }
+        });
+    });
+</script>

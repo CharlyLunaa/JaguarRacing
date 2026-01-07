@@ -1,0 +1,233 @@
+/* =============================================================================
+   JAGUAR RACING - CORE STYLES v3.0 (Refactor BEM)
+   ============================================================================= */
+
+:root {
+    --color-bg-dark: #0e0e0e;
+    --color-text-white: #ffffff;
+    --color-text-gray: #cccccc;
+    --color-accent-gold: #947100;
+    --max-width-desktop: 1200px;
+    --border-radius-card: 16px;
+    --transition-speed: 0.3s;
+}
+
+/* =============================================================================
+   1. SECCIÓN: IDENTIDAD
+   ============================================================================= */
+.about-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: var(--max-width-desktop);
+    margin: 120px auto;
+    padding: 0 40px;
+    gap: 60px;
+}
+
+/* Contenido de texto */
+.about-section__content {
+    flex: 1;
+    color: var(--color-text-white);
+    position: relative;
+}
+
+/* TÍTULOS CON DEGRADADO E IMPACTO */
+.about-section__content h2 {
+    font-family: 'Impact', sans-serif;
+    font-size: 3.5rem;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    line-height: 1.1;
+
+    /* Degradado Dorado */
+    background: linear-gradient(135deg, #fff 0%, #A67C00 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+/* PÁRRAFOS ELEGANTES */
+.about-section__content p {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 1.25rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: #e0e0e0;
+    text-align: justify;
+
+    /* Línea decorativa lateral */
+    border-left: 3px solid #A67C00;
+    padding-left: 20px;
+}
+
+/* LOGOTIPOS */
+.about-section__logo {
+    flex: 1;
+    max-width: 450px;
+    height: auto;
+    object-fit: contain;
+}
+
+/* =============================================================================
+   SECCIÓN: JOIN TEAM 
+   ============================================================================= */
+.join-cta {
+    position: relative;
+    width: 100%;
+    /* Min-height para evitar cortes en móvil */
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+        url('/img/page/Registro.webp');
+    background-size: cover;
+    background-position: center;
+
+    /* Parallax elegante en PC */
+    background-attachment: fixed;
+
+    will-change: transform;
+}
+
+/* Texto del CTA */
+.join-cta__text {
+    color: var(--color-text-white);
+    max-width: 500px;
+    text-align: left;
+    z-index: 2;
+    padding-left: 10%;
+    padding-right: 20px;
+}
+
+.join-cta__text h2 {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    line-height: 1.1;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    font-family: 'Impact', sans-serif;
+
+    background: linear-gradient(135deg, #ffffff 0%, #e2b263 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.join-cta__text p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    line-height: 1.6;
+    color: #f0f0f0;
+}
+
+.boton-registro {
+    display: inline-block;
+    background-color: var(--color-text-white);
+    color: black;
+    padding: 15px 40px;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 2px solid var(--color-text-white);
+    transition: all var(--transition-speed) ease;
+}
+
+.boton-registro:hover {
+    background-color: transparent;
+    color: var(--color-text-white);
+}
+
+/* =============================================================================
+   4. SECCIÓN: CONTADOR
+   ============================================================================= */
+
+.events-section h2{
+    font-family: 'Impact', sans-serif;
+    font-size: 3.5rem;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 10px;
+
+    /* Degradado Dorado */
+    background: linear-gradient(135deg, #caa43c 0%, #A67C00 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+    }
+
+/* =============================================================================
+   5. RESPONSIVE DESIGN
+   ============================================================================= */
+@media (max-width: 768px) {
+    .about-section {
+        flex-direction: column;
+        text-align: center;
+        margin: 60px auto;
+        gap: 40px;
+    }
+
+    .about-section__content h2 {
+        font-size: 2.5rem;
+        text-align: center;
+    }
+
+    .about-section__content p {
+        font-size: 1.1rem;
+        text-align: center;
+        border-left: none;
+        border-top: 2px solid #A67C00;
+        padding-top: 20px;
+        padding-left: 0;
+    }
+
+    .about-section__logo {
+        margin-top: 20px;
+        max-width: 80%;
+    }
+
+    .join-cta {
+        background-attachment: scroll;
+        background-position: center center;
+        justify-content: center;
+    }
+
+    .join-cta__text {
+        padding-left: 20px;
+        padding-right: 20px;
+        text-align: center;
+        max-width: 100%;
+    }
+
+    .join-cta__text h2 {
+        font-size: 2.2rem;
+    }
+
+    .sponsor-card {
+        width: 280px;
+        height: 180px;
+    }
+
+    .sponsors-marquee {
+        gap: 20px;
+    }
+
+    .events-section h2{
+    font-family: 'Impact', sans-serif;
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+
+    /* Degradado Dorado */
+    background: linear-gradient(135deg, #caa43c 0%, #A67C00 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+    }
+}

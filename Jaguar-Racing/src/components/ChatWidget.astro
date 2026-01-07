@@ -1,0 +1,158 @@
+---
+import '../styles/widget_chat.css';
+---
+
+<div 
+    id="chat-trigger" 
+    class="chat-trigger" 
+    style="background-image: url('/img/page/IMGChatv2.webp');"
+>
+    </div>
+
+<div id="chat-window" class="chat-window">
+    <div class="chat-window__header">
+        <div class="chat-header__info">
+            <div class="chat-header__status-dot"></div>
+            <span class="chat-header__title">Asistente Jaguar</span>
+        </div>
+        <span id="chat-close-btn" class="chat-header__close">✖</span>
+    </div>
+
+    <div id="chat-messages" class="chat-window__messages"></div>
+
+    <div id="typing-indicator" class="chat-window__typing">
+        Jaguar está escribiendo<span class="dot-flashing"></span>
+    </div>
+
+    <div id="suggestions-container" class="chat-window__suggestions"></div>
+
+    <div class="chat-window__input-area">
+        <input type="text" id="chat-input" class="chat-input__field" placeholder="Escribe tu duda..." autocomplete="off">
+        <button id="chat-send-btn" class="chat-input__send">Enviar</button>
+    </div>
+</div>
+
+<script>
+    // Usamos el evento de Astro para reinicializar correctamente
+    document.addEventListener('astro:page-load', () => {
+        const input = document.getElementById('chat-input') as HTMLInputElement;
+        const sendBtn = document.getElementById('chat-send-btn');
+        const chatWindow = document.getElementById('chat-window');
+        const trigger = document.getElementById('chat-trigger');
+        const closeBtn = document.getElementById('chat-close-btn');
+        const suggestionsContainer = document.getElementById('suggestions-container');
+        const chatMessages = document.getElementById('chat-messages');
+        const typingIndicator = document.getElementById('typing-indicator');
+
+        if (!trigger || !chatWindow || !chatMessages) return;
+
+        // --- FUNCIONES CORE ---
+        const scrollAlFondo = () => {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        };
+
+        const mostrarTyping = (show: boolean) => {
+            if (typingIndicator) typingIndicator.style.display = show ? 'block' : 'none';
+            if (show) scrollAlFondo();
+        };
+
+        const agregarMensaje = (texto: string, clase: string, guardar: boolean = false) => {
+            const div = document.createElement('div');
+            div.className = `chat-message ${clase}`;
+            div.innerText = texto;
+            chatMessages.appendChild(div);
+            scrollAlFondo();
+
+            if (guardar) {
+                let h = JSON.parse(sessionStorage.getItem('jaguar_chat_history') || '[]');
+                h.push({ texto, remitente: clase.includes('user') ? 'user' : 'bot' });
+                sessionStorage.setItem('jaguar_chat_history', JSON.stringify(h.slice(-20)));
+            }
+        };
+
+        const enviarMensaje = async (mantenerFoco = true) => {
+            if (!input || !sendBtn) return;
+            const texto = input.value.trim();
+            if (!texto) return;
+
+            // Generar o recuperar ID de usuario
+            let userId = localStorage.getItem('jaguar_user_id');
+            if (!userId) {
+                userId = crypto.randomUUID?.() || Math.random().toString(36).substring(2);
+                localStorage.setItem('jaguar_user_id', userId);
+            }
+
+            input.disabled = true;
+            sendBtn.classList.add('chat-input__send--disabled');
+
+            agregarMensaje(texto, 'chat-message--user', true);
+            input.value = '';
+            mostrarTyping(true);
+
+            // Contexto para la IA
+            const historial = JSON.parse(sessionStorage.getItem('jaguar_chat_history') || '[]');
+            const messages = historial.slice(-6).map((m: any) => ({
+                role: m.remitente === 'user' ? 'user' : 'assistant',
+                content: m.texto
+            }));
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'x-user-id': userId },
+                    body: JSON.stringify({ messages })
+                });
+
+                const data = await response.json();
+                mostrarTyping(false);
+                agregarMensaje(data.content || "Lo siento, tuve un problema técnico.", 'chat-message--bot', true);
+            } catch (error) {
+                mostrarTyping(false);
+                agregarMensaje("Error de conexión. Intenta de nuevo.", 'chat-message--bot');
+            } finally {
+                input.disabled = false;
+                sendBtn.classList.remove('chat-input__send--disabled');
+                if (mantenerFoco) input.focus();
+            }
+        };
+
+        const toggleChat = () => {
+            chatWindow.classList.toggle('chat-window--open');
+            trigger.classList.toggle('chat-trigger--active');
+            if (chatWindow.classList.contains('chat-window--open')) {
+                mostrarSugerencias();
+                scrollAlFondo();
+                setTimeout(() => input?.focus(), 100);
+            }
+        };
+
+        const mostrarSugerencias = () => {
+            if (!suggestionsContainer) return;
+            const preguntas = ["¿Cómo unirme?", "Patrocinios", "Ubicación"];
+            suggestionsContainer.innerHTML = '';
+            preguntas.forEach(p => {
+                const chip = document.createElement('div');
+                chip.className = 'suggestion-chip';
+                chip.innerText = p;
+                chip.onclick = () => { if(input) { input.value = p; enviarMensaje(false); } };
+                suggestionsContainer.appendChild(chip);
+            });
+        };
+
+        // --- INICIALIZACIÓN ---
+        // 1. Limpiar mensajes previos antes de cargar historial (Evita duplicados en Astro)
+        chatMessages.innerHTML = '';
+        
+        // 2. Cargar historial
+        const historial = JSON.parse(sessionStorage.getItem('jaguar_chat_history') || '[]');
+        historial.forEach((m: any) => {
+            agregarMensaje(m.texto, m.remitente === 'user' ? 'chat-message--user' : 'chat-message--bot', false);
+        });
+
+        // 3. Vincular Eventos
+        trigger.onclick = toggleChat;
+        closeBtn!.onclick = toggleChat;
+        sendBtn!.onclick = () => enviarMensaje();
+        input?.addEventListener('keypress', (e) => { if (e.key === 'Enter') enviarMensaje(); });
+    });
+</script>
