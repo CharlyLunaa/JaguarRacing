@@ -1,36 +1,40 @@
-let slideInterval; // Variable global para controlar el timer
+class HeroSlider extends HTMLElement {
+    constructor() {
+        super();
+        this.interval = null;
+        this.slides = [];
+        this.currentIndex = 0;
+    }
 
-// Función que inicia todo
-const startHeroSlider = () => {
-    // 1. Limpieza preventiva: Si ya había un timer corriendo, mátalo.
-    if (slideInterval) clearInterval(slideInterval);
+    connectedCallback() {
+        this.slides = this.querySelectorAll('.bg-slide');
+        if (this.slides.length <= 1) return;
+        this.startSlider(4000);
+    }
 
-    const slides = document.querySelectorAll('.bg-slide');
-    const intervalTime = 4000;
-    let currentSlide = 0;
+    disconnectedCallback() {
+        this.stopSlider();
+    }
 
-    // Si no hay slides o solo hay 1, no hacemos nada
-    if (slides.length <= 1) return;
+    startSlider(time) {
+        this.stopSlider();
+        this.interval = setInterval(() => this.nextSlide(), time);
+    }
 
-    const nextSlide = () => {
-        // Verificamos que el elemento siga existiendo en el DOM antes de tocarlo
-        if (!slides[currentSlide]) return;
+    stopSlider() {
+        if (this.interval) {
+            clearInterval(this.interval);
+            this.interval = null;
+        }
+    }
 
-        slides[currentSlide].classList.remove('active');
-        currentSlide = (currentSlide + 1) % slides.length;
-        slides[currentSlide].classList.add('active');
-    };
+    nextSlide() {
+        this.slides[this.currentIndex].classList.remove('active');
+        this.currentIndex = (this.currentIndex + 1) % this.slides.length;
+        this.slides[this.currentIndex].classList.add('active');
+    }
+}
 
-    // Guardamos el ID del intervalo para poder limpiarlo después
-    slideInterval = setInterval(nextSlide, intervalTime);
-};
-
-// ESCUCHAMOS EL EVENTO DE ASTRO, NO EL DEL NAVEGADOR
-document.addEventListener('astro:page-load', startHeroSlider);
-
-// (Opcional) Si por alguna razón astro:page-load falla en tu versión,
-// este respaldo asegura que funcione en la primera carga:
-if (!window.astroSliderInitialized) {
-    startHeroSlider();
-    window.astroSliderInitialized = true;
+if (!customElements.get('hero-slider')) {
+    customElements.define('hero-slider', HeroSlider);
 }

@@ -3,7 +3,7 @@
 import Layout from '../layouts/Layout.astro';
 import Footer from '../components/Footer.astro';
 
-// 1. IMPORTANTE: Importar la herramienta de imágenes de Astro
+// 1. Herramienta de imágenes de Astro
 import { Image } from 'astro:assets';
 
 // Importamos los CSS específicos
@@ -16,11 +16,10 @@ import '../styles/miniJuego.css';
 import '../styles/NoSelect.css';
 
 const pageTitle = "Inicio";
-const pageDesc = "Jaguar Racing: Escudería oficial de ESIME Azcapotzalco (IPN).";
 
-// 2. CARGAR IMÁGENES DE LA CARPETA "Portada"
-// Busca automáticamente cualquier imagen en src/assets/Portada
-const backgroundImages = await Astro.glob('/public/img/Portada/*.{jpg,JPG,jpeg,JPEG,png,PNG,webp,WEBP}');
+// 2. CARGAR IMÁGENES
+// Asegúrate de que las fotos estén en src/assets/Portada/
+const backgroundImages = await Astro.glob('../assets/Portada/*.{jpg,JPG,jpeg,JPEG,png,PNG,webp,WEBP}');
 
 // 3. Array de Patrocinadores
 const patrocinadores = [
@@ -34,11 +33,11 @@ const patrocinadores = [
 
     <main>
         
-        <div class="hero-background-container">
+        <hero-slider class="hero-background-container">
             
             <div class="slideshow-wrapper">
                 {backgroundImages.map((img, index) => (
-                    <div class={`bg-slide ${index === 0 ? 'active' : ''}`} data-index={index}>
+                    <div class={`bg-slide ${index === 0 ? 'active' : ''}`}>
                        <Image 
                             src={img.default} 
                             alt="Jaguar Racing Portada"
@@ -46,10 +45,8 @@ const patrocinadores = [
                             height={1080}
                             format="webp"
                             quality="mid"
-                            /* Genera versiones para móvil y PC automáticamente */
                             widths={[640, 1024, 1920]}
                             sizes="100vw"
-                            /* La primera carga rápido, las demás lazy */
                             loading={index === 0 ? "eager" : "lazy"}
                             class="bg-image-fit"
                         />
@@ -62,7 +59,7 @@ const patrocinadores = [
                 <h1 class="hero__title">Jaguar Racing</h1>
             </div>
             
-        </div>
+        </hero-slider>
 
         <div class="about-section">
             <img src="/img/page/ImgIPN.webp" class="about-section__logo" alt="Escudo IPN" loading="lazy" decoding="async" width="200" height="200">
@@ -96,6 +93,20 @@ const patrocinadores = [
         </div>
 
         <div class="join-cta">
+            <video 
+                class="cta-video-bg" 
+                autoplay 
+                loop 
+                muted 
+                playsinline 
+                preload="auto"
+                poster="/img/page/Registro.webp" 
+            >
+                <source src="/videos/VideoConv.mp4" type="video/mp4">
+            </video>
+
+            <div class="cta-overlay"></div>
+
             <div class="join-cta__text">
                 <h2>ÚNETE A<br>NUESTRO<br>EQUIPO</h2>
                 <p>Abierto a todas las carreras y semestres que curses. Jaguar Racing te prepara para un mejor
@@ -117,27 +128,13 @@ const patrocinadores = [
             <div class="sponsors-marquee">
                 {patrocinadores.map((img) => (
                     <div class="sponsor-card">
-                        <img 
-                            src={`/img/IMGpatrocinadores/${img}`} 
-                            alt="Patrocinador" 
-                            width="200" 
-                            height="100" 
-                            loading="lazy" 
-                            decoding="async" 
-                        />
+                        <img src={`/img/IMGpatrocinadores/${img}`} alt="Patrocinador" width="200" height="100" loading="lazy" decoding="async" />
                     </div>
                 ))}
                 {patrocinadores.map((img) => (
                     <div class="sponsor-card">
-                        <img 
-                            src={`/img/IMGpatrocinadores/${img}`} 
-                            alt="Patrocinador" 
-                            width="200" 
-                            height="100" 
-                            loading="lazy" 
-                            decoding="async" 
-                        />
-                        </div>
+                        <img src={`/img/IMGpatrocinadores/${img}`} alt="Patrocinador" width="200" height="100" loading="lazy" decoding="async" />
+                    </div>
                 ))}
             </div>
 
@@ -208,8 +205,50 @@ const patrocinadores = [
 
     <Footer />
     
-    <script is:inline defer src="/js/portada.js"></script>
     <script is:inline defer src="/js/miniJuego.js"></script>
     <script is:inline defer src="/js/contadores.js"></script>
+
+    <script>
+        class HeroSlider extends HTMLElement {
+            constructor() {
+                super();
+                this.interval = null;
+                this.slides = [];
+                this.currentIndex = 0;
+            }
+
+            connectedCallback() {
+                this.slides = this.querySelectorAll('.bg-slide');
+                if (this.slides.length <= 1) return;
+                this.startSlider(4000); 
+            }
+
+            disconnectedCallback() {
+                this.stopSlider();
+            }
+
+            startSlider(time) {
+                this.stopSlider();
+                this.interval = setInterval(() => this.nextSlide(), time);
+            }
+
+            stopSlider() {
+                if (this.interval) {
+                    clearInterval(this.interval);
+                    this.interval = null;
+                }
+            }
+
+            nextSlide() {
+                this.slides[this.currentIndex].classList.remove('active');
+                this.currentIndex = (this.currentIndex + 1) % this.slides.length;
+                this.slides[this.currentIndex].classList.add('active');
+            }
+        }
+        
+        if (!customElements.get('hero-slider')) {
+            customElements.define('hero-slider', HeroSlider);
+        }
+    </script>
 
 </Layout>

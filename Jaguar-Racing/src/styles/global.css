@@ -1,5 +1,5 @@
 /* =============================================================================
-   JAGUAR RACING GLOBAL STYLES - FINAL v5.1 (Mixed Fonts: Impact Hero + Montserrat Body)
+   JAGUAR RACING GLOBAL STYLES - FINAL v5.3 (Dark Only - No Blur)
    ============================================================================= */
 
 :root {
@@ -11,8 +11,8 @@
     --text-white: #ffffff;
 
     /* --- FUENTES --- */
-    --font-main: 'Montserrat', sans-serif;  /* Para todo el cuerpo */
-    --font-impact: 'Impact', sans-serif;    /* EXCLUSIVO: Para el título H1 */
+    --font-main: 'Montserrat', sans-serif;
+    --font-impact: 'Impact', sans-serif;
 
     /* --- 📍 SISTEMA DE TIPOGRAFÍA FLUIDA --- */
     --fs-hero: clamp(2.5rem, 11vw, 7.5rem);
@@ -60,7 +60,7 @@ h1 {
     font-size: var(--fs-hero);
     line-height: 1.2;
     margin-bottom: 20px;
-    font-weight: normal; /* Impact ya es gruesa, no necesita bold extra */
+    font-weight: normal; 
 }
 
 h2 {
@@ -292,14 +292,18 @@ img {
     height: 100%;
     object-fit: cover;
     object-position: center;
-    filter: brightness(0.6);
+    
+    /* SOLO OSCURECER (Sin desenfoque) */
+    /* brightness(0.4): Oscurece al 40% para que el texto resalte */
+    filter: brightness(0.4);
+    
     pointer-events: none;
     user-select: none;
 }
 
-/* TÍTULO HERO (Escritorio) - RESTAURADO A IMPACT */
+/* TÍTULO HERO (Escritorio) */
 .hero__title {
-    font-family: var(--font-impact); /* Impact is Back */
+    font-family: var(--font-impact); 
     font-weight: 900;
     text-transform: uppercase;
     text-align: center;
@@ -317,7 +321,6 @@ img {
     line-height: 0.9;
     letter-spacing: -2px;
     
-    /* Efecto dorado original */
     background: linear-gradient(135deg, #785a00 0%, #A67C00 20%, #fff2a1 45%, #FFE878 55%, #A67C00 80%, #785a00 100%);
     -webkit-background-clip: text;
     background-clip: text;
@@ -480,7 +483,6 @@ img {
 
     /* 📍 HERO STACKED: JAGUAR arriba / RACING abajo */
     .hero__title {
-        /* Mantenemos Impact en móvil también */
         font-family: var(--font-impact); 
         
         font-size: 11.5vw !important;

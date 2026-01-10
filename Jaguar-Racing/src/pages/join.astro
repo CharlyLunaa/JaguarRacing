@@ -16,22 +16,23 @@ const areas = ['1.webp', '2.webp', '3.webp', '4.webp', '5.webp', '6.webp', '7.we
 
     <main>
         <div class="hero">
-            <img 
-                src="/img/page/Convo.webp" 
-                alt="Convocatoria Jaguar Racing" 
+            <video 
                 class="hero__image" 
-                fetchpriority="high" 
-                decoding="async"
-                loading="eager"
-                width="1300"
-                height="602"
-            />
+                autoplay 
+                loop 
+                muted 
+                playsinline 
+                preload="auto"
+                poster="/img/page/imgNegro.webp"
+            >
+                <source src="/video/VideoConv.mp4" type="video/mp4">
+            </video>
+
             <h1 class="hero__title">Convocatoria</h1>
         </div>
 
         <div class="areas-showcase">
             <h2 class="areas-showcase__title">Áreas</h2>
-
             <button class="areas-showcase__btn areas-showcase__btn--prev" id="btn-prev" aria-label="Anterior">&#10094;</button>
 
             <div class="areas-carousel" id="carruselAreas">
@@ -51,7 +52,6 @@ const areas = ['1.webp', '2.webp', '3.webp', '4.webp', '5.webp', '6.webp', '7.we
             </div>
 
             <button class="areas-showcase__btn areas-showcase__btn--next" id="btn-next" aria-label="Siguiente">&#10095;</button>
-            
             <div class="areas-showcase__indicators" id="indicadores"></div>
         </div>
 
