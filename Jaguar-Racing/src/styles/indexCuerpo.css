@@ -1,5 +1,5 @@
 /* =============================================================================
-   JAGUAR RACING - CORE STYLES v3.1 (Fix Cronograma & Patrocinios)
+   JAGUAR RACING - CORE STYLES v5.0 (Final Fix: Gold Title & Syntax)
    ============================================================================= */
 
 :root {
@@ -10,6 +10,72 @@
     --max-width-desktop: 1200px;
     --border-radius-card: 16px;
     --transition-speed: 0.3s;
+    --jaguar-gold: #A67C00;
+}
+
+/* =============================================================================
+   0. SECCIÓN: HERO (FONDO CAMBIANTE)
+   ============================================================================= */
+.hero-background-container {
+    position: relative;
+    width: 100%;
+    height: 95vh;
+    min-height: 600px;
+    overflow: hidden;
+    background-color: #000;
+}
+
+.slideshow-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.bg-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+    z-index: 1;
+}
+
+.bg-slide.active {
+    opacity: 1; 
+    z-index: 2;
+}
+
+.bg-image-fit {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover; 
+    object-position: center;
+}
+
+.overlay-dark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.7) 100%);
+    pointer-events: none;
+}
+
+.hero-content-fixed {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    text-align: center;
+    width: 90%;
 }
 
 /* =============================================================================
@@ -76,7 +142,7 @@
         url('/img/page/Registro.webp');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed; /* Parallax en PC */
+    background-attachment: fixed;
     will-change: transform;
 }
 
@@ -126,13 +192,12 @@
 }
 
 /* =============================================================================
-   3. SECCIÓN: PATROCINADORES (FIX MÓVIL)
+   3. SECCIÓN: PATROCINADORES
    ============================================================================= */
 .sponsors-section {
     padding: 60px 0;
     text-align: center;
     background-color: #050505;
-    /* FIX: Asegura que el contenedor no se desborde horizontalmente */
     width: 100%;
     max-width: 100vw; 
     overflow: hidden; 
@@ -156,21 +221,16 @@
     font-size: 1rem;
 }
 
-/* El Marquee (animación) debe estar en su propio CSS, pero esto asegura 
-   que el contenedor padre lo maneje bien */
 .sponsors-marquee {
     display: flex;
-    width: max-content; /* Deja que crezca lo necesario */
-    /* La animación se define en carruselPatrocinios.css, 
-       pero aquí aseguramos el layout flex */
+    width: max-content; 
 }
 
 /* =============================================================================
-   4. SECCIÓN: CRONOGRAMA OPERATIVO (FIX CENTRADO)
+   4. SECCIÓN: CRONOGRAMA OPERATIVO
    ============================================================================= */
 .events-section {
     padding: 80px 20px;
-    /* FIX: Centra todo el texto dentro de la sección */
     text-align: center; 
     background-color: var(--color-bg-dark);
 }
@@ -181,22 +241,19 @@
     margin-bottom: 50px;
     text-transform: uppercase;
     letter-spacing: 10px;
-    /* Centrado explícito por si acaso */
     display: block; 
     width: 100%; 
-    
     background: linear-gradient(135deg, #caa43c 0%, #A67C00 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
 }
 
-/* Contenedor de las tarjetas */
 .events-grid {
     display: flex;
-    justify-content: center; /* Centra las tarjetas horizontalmente */
+    justify-content: center;
     gap: 40px;
-    flex-wrap: wrap; /* Permite que bajen en móvil */
+    flex-wrap: wrap;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -207,7 +264,7 @@
     border-radius: 15px;
     padding: 30px;
     width: 100%;
-    max-width: 450px; /* Ancho máximo por tarjeta */
+    max-width: 450px;
     display: flex;
     align-items: center;
     gap: 20px;
@@ -220,7 +277,7 @@
 }
 
 .event-card__info {
-    text-align: left; /* El texto dentro de la tarjeta se ve mejor alineado a la izquierda */
+    text-align: left;
     flex: 1;
 }
 
@@ -244,12 +301,10 @@
     object-fit: contain;
 }
 
-
 /* =============================================================================
-   5. RESPONSIVE DESIGN (MÓVIL) - OPTIMIZADO PERFORMANCE
+   5. RESPONSIVE DESIGN (MÓVIL)
    ============================================================================= */
 @media (max-width: 768px) {
-    /* 1. FIX TÍTULO PATROCINADORES */
     .titulo-seccion {
         font-size: clamp(2rem, 10vw, 3rem) !important; 
         letter-spacing: 0 !important; 
@@ -261,16 +316,13 @@
         hyphens: auto;
     }
 
-    /* 2. OPTIMIZACIÓN CRÍTICA DE RENDIMIENTO (TEXTO) 
-       Eliminamos filtros pesados en móviles para que el scroll fluya */
     .about-section__content h2,
     .events-section h2,
     .join-cta__text h2 {
-        filter: none !important; /* Adiós sombras costosas */
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Alternativa ligera */
+        filter: none !important;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     }
 
-    /* Identidad */
     .about-section {
         flex-direction: column;
         text-align: center;
@@ -298,9 +350,7 @@
         max-width: 70%;
     }
 
-    /* Join CTA - FIX RENDIMIENTO */
     .join-cta {
-        /* IMPORTANTE: Forzamos scroll. 'fixed' mata el rendimiento en móvil */
         background-attachment: scroll !important; 
         justify-content: center;
         min-height: 400px;
@@ -316,7 +366,6 @@
         font-size: 2.2rem;
     }
 
-    /* Patrocinadores */
     .sponsors-section {
         padding: 40px 0;
     }
@@ -331,7 +380,6 @@
         height: 80px;
     }
 
-    /* Cronograma */
     .events-section h2 {
         font-size: 1.8rem;
         letter-spacing: 3px;
@@ -348,9 +396,8 @@
         flex-direction: column;
         text-align: center;
         padding: 20px;
-        /* FIX: Quitamos efectos hover en táctil para ahorrar batería/CPU */
         transform: none !important; 
-        transition: border-color 0.3s ease; /* Solo animamos color, no posición */
+        transition: border-color 0.3s ease; 
     }
     
     .event-card__info {

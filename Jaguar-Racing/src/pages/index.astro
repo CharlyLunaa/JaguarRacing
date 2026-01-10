@@ -3,8 +3,10 @@
 import Layout from '../layouts/Layout.astro';
 import Footer from '../components/Footer.astro';
 
-// 1. Importamos los CSS específicos de esta página
-// Astro los fusionará y cargará rápido, sin necesidad del truco de "media=print"
+// 1. IMPORTANTE: Importar la herramienta de imágenes de Astro
+import { Image } from 'astro:assets';
+
+// Importamos los CSS específicos
 import '../styles/indexCuerpo.css';
 import '../styles/carruselPatrocinios.css';
 import '../styles/apoyanosbtn.css';
@@ -16,7 +18,11 @@ import '../styles/NoSelect.css';
 const pageTitle = "Inicio";
 const pageDesc = "Jaguar Racing: Escudería oficial de ESIME Azcapotzalco (IPN).";
 
-// 2. Tu Array de Patrocinadores (Convertido a JS puro)
+// 2. CARGAR IMÁGENES DE LA CARPETA "Portada"
+// Busca automáticamente cualquier imagen en src/assets/Portada
+const backgroundImages = await Astro.glob('/public/img/Portada/*.{jpg,JPG,jpeg,JPEG,png,PNG,webp,WEBP}');
+
+// 3. Array de Patrocinadores
 const patrocinadores = [
   'altair.webp', 'ansys.webp', 'bimsa.webp', 'copiisa.webp', 
   'mantemimiento.webp', 'polimex.webp', 'SMI.webp', 
@@ -27,18 +33,35 @@ const patrocinadores = [
 <Layout title={pageTitle}>
 
     <main>
-        <div class="hero">
-            <img 
-            src="/img/page/Portada.webp" 
-            alt="Jaguar Racing Portada" 
-            class="hero__image" 
-            fetchpriority="high"
-            decoding="async" 
-            loading="eager" 
-            width="1358" 
-            height="602"
-            />
-            <h1 class="hero__title">Jaguar Racing</h1>
+        
+        <div class="hero-background-container">
+            
+            <div class="slideshow-wrapper">
+                {backgroundImages.map((img, index) => (
+                    <div class={`bg-slide ${index === 0 ? 'active' : ''}`} data-index={index}>
+                       <Image 
+                            src={img.default} 
+                            alt="Jaguar Racing Portada"
+                            width={1920}
+                            height={1080}
+                            format="webp"
+                            quality="mid"
+                            /* Genera versiones para móvil y PC automáticamente */
+                            widths={[640, 1024, 1920]}
+                            sizes="100vw"
+                            /* La primera carga rápido, las demás lazy */
+                            loading={index === 0 ? "eager" : "lazy"}
+                            class="bg-image-fit"
+                        />
+                        <div class="overlay-dark"></div>
+                    </div>
+                ))}
+            </div>
+
+            <div class="hero-content-fixed">
+                <h1 class="hero__title">Jaguar Racing</h1>
+            </div>
+            
         </div>
 
         <div class="about-section">
@@ -95,25 +118,25 @@ const patrocinadores = [
                 {patrocinadores.map((img) => (
                     <div class="sponsor-card">
                         <img 
-            src={`/img/IMGpatrocinadores/${img}`} 
-            alt="Patrocinador" 
-            width="200" 
-            height="100" 
-            loading="lazy" 
-            decoding="async" 
-        />
+                            src={`/img/IMGpatrocinadores/${img}`} 
+                            alt="Patrocinador" 
+                            width="200" 
+                            height="100" 
+                            loading="lazy" 
+                            decoding="async" 
+                        />
                     </div>
                 ))}
                 {patrocinadores.map((img) => (
                     <div class="sponsor-card">
                         <img 
-            src={`/img/IMGpatrocinadores/${img}`} 
-            alt="Patrocinador" 
-            width="200" 
-            height="100" 
-            loading="lazy" 
-            decoding="async" 
-        />
+                            src={`/img/IMGpatrocinadores/${img}`} 
+                            alt="Patrocinador" 
+                            width="200" 
+                            height="100" 
+                            loading="lazy" 
+                            decoding="async" 
+                        />
                         </div>
                 ))}
             </div>
@@ -184,7 +207,8 @@ const patrocinadores = [
     </main>
 
     <Footer />
-
+    
+    <script is:inline defer src="/js/portada.js"></script>
     <script is:inline defer src="/js/miniJuego.js"></script>
     <script is:inline defer src="/js/contadores.js"></script>
 

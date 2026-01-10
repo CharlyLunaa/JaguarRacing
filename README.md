@@ -76,7 +76,7 @@ JAGUAR-RACING/
 ├── src/
 │   ├── components/      # Bloques UI reutilizables
 │   │   ├── ChatWidget.astro  # Lógica del Chat (UI + JS Cliente)
-│   │   ├── Navbar.astro      # Navegación con detección de ruta activa
+│   │   ├── Header.astro      # Navegación con detección de ruta activa
 │   │   └── Footer.astro
 │   ├── layouts/         # Plantilla base (SEO, Meta tags, Estilos globales)
 │   ├── pages/           # Rutas del sitio
