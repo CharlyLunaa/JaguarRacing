@@ -1,19 +1,18 @@
 ---
-// Componente interactivo de visor 3D y panel educativo para Jaguar Racing
+// src/components/ModelViewer.astro
 ---
 
 <section class="render-hero">
     <div class="render-hero__inner">
         <h1>Ingeniería Interactiva</h1>
         <p>
-            Selecciona los sistemas en el modelo 3D para explorar la teoría de desarrollo, validación y manufactura detrás de nuestro vehículo Baja SAE.
+            Selecciona los sistemas en el modelo 3D para identificar el ensamble. 
         </p>
     </div>
 </section>
 
 <section class="render-interactive-section">
-    <div class="split-layout">
-        
+    <div class="viewer-wrapper">
         <div class="render-viewer-container" id="viewer-container">
             <canvas id="render-canvas" class="render-canvas"></canvas>
             
@@ -35,36 +34,18 @@
             </div>
         </div>
 
-        <aside class="info-panel">
-            <div class="panel-content">
-                <div class="panel-header">
-                    <h2 id="panel-title">Inicia la Exploración</h2>
-                </div>
-                
-                <div class="panel-body">
-                    <p id="panel-desc">
-                        Gira el modelo y haz clic en las diferentes piezas del monoplaza para revelar cómo aplicamos los conceptos de ingeniería en Jaguar Racing y quiénes hacen posible su manufactura.
-                    </p>
-                    <a href="#detalles" id="panel-action-btn" class="panel-btn hidden">
-                        Ver análisis a detalle ↓
-                    </a>
-                </div>
-
-                <div class="panel-sponsors hidden" id="panel-sponsors">
-                    <span class="sponsor-label">Validado / Manufacturado con apoyo de:</span>
-                    <div class="sponsor-logos" id="sponsor-logos-container">
-                    </div>
-                </div>
-            </div>
-        </aside>
-
+        <!-- Nuevo Marco Inferior Limpio -->
+        <div class="viewer-bottom-bar">
+            <h2 id="active-system-name">VISTA GENERAL DEL ENSAMBLE</h2>
+            <a href="#detalles" id="btn-more-info" class="btn-gold hidden">
+                Más información &darr;
+            </a>
+        </div>
     </div>
 </section>
 
 <style>
-    /* ─── Variables y Reset Básico ─── */
     :root {
-        --panel-bg: #111111;
         --panel-border: rgba(166, 124, 0, 0.2);
     }
 
@@ -74,82 +55,62 @@
         text-align: center;
     }
 
-    .render-hero h1 { margin-bottom: 0.5rem; }
+    .render-hero h1 { margin-bottom: 0.5rem; text-transform: uppercase; font-size: clamp(2rem, 5vw, 3.5rem); }
     .render-hero p { max-width: 600px; margin: 0 auto; color: var(--text-gray); }
 
-    /* ─── Split Layout ─── */
     .render-interactive-section {
         background: var(--bg-black);
         padding: 1rem 2rem 4rem;
     }
 
-    .split-layout {
+    .viewer-wrapper {
         display: flex;
         flex-direction: column;
-        gap: 1.5rem;
-        max-width: 1400px;
+        max-width: 1200px;
         margin: 0 auto;
-    }
-
-    @media (min-width: 1024px) {
-        .split-layout {
-            flex-direction: row;
-            height: 65vh; 
-            min-height: 500px;
-        }
-    }
-
-    /* ─── Contenedor 3D ─── */
-    .render-viewer-container {
-        position: relative;
-        flex: 2; 
-        height: 60vh; 
-        background: #050505;
         border: 1px solid var(--panel-border);
         border-radius: 12px;
+        background: #050505;
         overflow: hidden;
         box-shadow: 0 10px 40px rgba(0,0,0,0.5);
     }
 
-    @media (min-width: 1024px) {
-        .render-viewer-container { height: 100%; }
+    .render-viewer-container {
+        position: relative;
+        width: 100%;
+        height: 60vh;
+        min-height: 400px;
+        border-bottom: 1px solid var(--panel-border);
     }
 
     .render-canvas { width: 100%; height: 100%; outline: none; display: block; cursor: crosshair; }
 
-    /* ─── Panel de Información (Derecha) ─── */
-    .info-panel {
-        flex: 1; 
-        background: var(--panel-bg);
-        border: 1px solid var(--panel-border);
-        border-radius: 12px;
-        padding: 2rem;
+    /* Barra Inferior */
+    .viewer-bottom-bar {
         display: flex;
         flex-direction: column;
-        overflow-y: auto;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.5rem 2rem;
+        background: rgba(10, 10, 10, 0.8);
+        gap: 1rem;
     }
 
-    .info-panel::-webkit-scrollbar { width: 6px; }
-    .info-panel::-webkit-scrollbar-track { background: transparent; }
-    .info-panel::-webkit-scrollbar-thumb { background: rgba(166, 124, 0, 0.3); border-radius: 10px; }
-    .info-panel::-webkit-scrollbar-thumb:hover { background: var(--jaguar-gold); }
-
-    .panel-header h2 {
-        margin: 0 0 1rem 0;
-        font-size: 1.8rem;
-        line-height: 1.2;
+    @media (min-width: 768px) {
+        .viewer-bottom-bar {
+            flex-direction: row;
+        }
     }
 
-    .panel-body p {
-        color: #cccccc;
-        line-height: 1.6;
-        font-size: 1rem;
+    .viewer-bottom-bar h2 {
+        margin: 0;
+        font-size: 1.2rem;
+        color: var(--text-white);
+        text-transform: uppercase;
+        letter-spacing: 2px;
     }
 
-    /* ─── Botón de Salto ─── */
-    .panel-btn {
-        display: inline-block;
-        margin-top: 1.5rem;
+    .btn-gold {
         padding: 0.8rem 1.5rem;
         background: rgba(166, 124, 0, 0.1);
         color: var(--jaguar-gold);
@@ -158,46 +119,23 @@
         text-decoration: none;
         font-weight: bold;
         font-size: 0.9rem;
-        text-align: center;
         transition: all 0.3s ease;
-    }
-    .panel-btn:hover { background: var(--jaguar-gold); color: var(--bg-black); }
-    .panel-btn.hidden { display: none; }
-
-    /* ─── Patrocinadores ─── */
-    .panel-sponsors {
-        margin-top: auto;
-        padding-top: 2rem;
-        border-top: 1px solid rgba(255,255,255,0.1);
-    }
-    .panel-sponsors.hidden { display: none; }
-
-    .sponsor-label {
-        display: block;
-        font-size: 0.8rem;
-        color: var(--text-gray);
-        margin-bottom: 1rem;
         text-transform: uppercase;
+        letter-spacing: 1px;
     }
 
-    .sponsor-logos {
-        display: flex;
-        gap: 12px;
-        align-items: center;
-        flex-wrap: wrap;
+    .btn-gold:hover {
+        background: var(--jaguar-gold);
+        color: var(--bg-black);
     }
     
-    /*Mobile */
-    @media (max-width: 768px) {
-        .panel-sponsors {
-            text-align: center; 
-        }
-        .sponsor-logos {
-            justify-content: center; 
-        }
+    .btn-gold.hidden {
+        visibility: hidden;
+        opacity: 0;
+        pointer-events: none;
     }
 
-    /* ─── Controles ─── */
+    /* Controles */
     .render-viewer__loading { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--bg-black); z-index: 10; transition: opacity 0.5s; }
     .render-viewer__loading.hidden { opacity: 0; pointer-events: none; }
     .loading-spinner { width: 40px; height: 40px; border: 3px solid rgba(166, 124, 0, 0.1); border-top-color: var(--jaguar-gold); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 1rem; }
@@ -213,90 +151,17 @@
     import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
     import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
-    import logoAltair from '../../assets/IMGpatrocinadores/altair.webp';
-    import logoHeydi from '../../assets/IMGpatrocinadores/heydi.webp';
-    import logoBimsa from '../../assets/IMGpatrocinadores/bimsa.webp';
-    import logoCopiisa from '../../assets/IMGpatrocinadores/copiisa.webp';
+    // 1. DICCIONARIO MINIMALISTA
+    const simpleDiccionario = {
+        "powertrain": { name: "Tren Motriz", sectionId: "#feature-powertrain" },
+        "suspension": { name: "SUSPENSIÓN", sectionId: "#feature-suspension" },
+        "frenos":     { name: "FRENOS", sectionId: "#feature-frenos" },
+        "direccion":  { name: "DIRECCIÓN", sectionId: "#feature-direccion" },
+        "chasis":     { name: "Estructura Tubular", sectionId: "#detalles" }, 
+        "default":    { name: "Componente JR25", sectionId: null }
+    };
 
-    // ─── ESTILOS INLINE PARA LOGOS ───
-    const linkStyle = `
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        width: 150px;
-        height: 100px;
-        text-decoration: none;
-        cursor: pointer;
-        padding: 5px;
-    `;
-
-    const imgStyle = `
-        width: auto;
-        height: auto;
-        max-width: 100%;
-        max-height: 80px;
-        object-fit: contain;
-        opacity: 0.7;
-        pointer-events: none;
-        user-select: none;
-        transition: opacity 0.4s ease, transform 0.4s ease;
-    `;
-
-    const sponsorLink = (href: string, umamiEvent: string, src: string, alt: string) =>
-        `<a href="${href}" target="_blank" rel="noopener noreferrer" class="panel-sponsor-link" data-umami-event="${umamiEvent}" style="${linkStyle}"><img src="${src}" alt="${alt}" style="${imgStyle}"></a>`;
-
-    // ─── DICCIONARIO DE DATOS ───
-// (Reemplaza el objeto dataDiccionario completo en el bloque <script>)
-
-const dataDiccionario = {
-    "powertrain": {
-        title: "Tren Motriz — CVT & Caja Reductora",
-        desc: "Cadena cinemática validada por FEM en Altair HyperMesh bajo picos de 65 Nm. La CVT Comet 780 opera en conjunto con la caja reductora para mantener una eficiencia de transferencia >88% a través del rango de RPM permitido por la normativa SAE. La rigidez torsional de los semiejes fue el criterio de diseño primario.",
-        sponsors: [
-            sponsorLink("https://altair.com", "Outbound Sponsor - Altair", logoAltair.src, "Altair"),
-            sponsorLink("https://www.facebook.com/ventasheydi/", "Outbound Sponsor - Heydi", logoHeydi.src, "Heydi"),
-        ],
-        sectionId: "#feature-powertrain"
-    },
-    "suspension": {
-        title: "Suspensión — Doble Horquilla, KPI 41.34°",
-        desc: "KPI de 41.34° determinado mediante análisis cinemático iterativo en Altair MotionView. La geometría de doble horquilla mantiene la huella de contacto del neumático bajo deflexiones extremas, controlando el centro de balanceo dinámico para resistir los artículos de terreno del reglamento SAE Baja sin pérdida de estabilidad lateral.",
-        sponsors: [
-            sponsorLink("https://altair.com", "Outbound Sponsor - Altair", logoAltair.src, "Altair"),
-        ],
-        sectionId: "#feature-suspension"
-    },
-    "frenos": {
-        title: "Frenado Hidráulico — 9.5 MPa, Dual Circuit",
-        desc: "Circuito dual con balance F/R de 62/38%. Rotores dimensionados por simulación térmica en Ansys para disipar 3.2 kJ por evento sin superar 280°C. Presión de línea máxima de 9.5 MPa con amplio margen sobre el límite del Artículo 4 del reglamento. Cero bloqueo prematuro validado en banco dinámico.",
-        sponsors: [
-            sponsorLink("https://www.linkedin.com/company/bombas-internacionales-mexicanas-sa-cv", "Outbound Sponsor - BIMSA", logoBimsa.src, "Bimsa"),
-            sponsorLink("https://www.linkedin.com/company/copiisaofficial/?originalSubdomain=mx", "Outbound Sponsor - Copiisa", logoCopiisa.src, "Copiisa"),
-        ],
-        sectionId: "#feature-frenos"
-    },
-    "direccion": {
-        title: "Dirección — Ackermann 74%, Von Mises 244.5 MPa",
-        desc: "Geometría de Ackermann calibrada al 74% con radio de giro interno de 1.53 m (60 in). El housing del piñón fue simulado en LS-DYNA bajo 65 Nm de torque pico, arrojando un esfuerzo máximo de Von Mises de 244.5 MPa — factor de seguridad 1.4 sobre el límite de fluencia. El rediseño redujo el empaquetado total en un 15%.",
-        sponsors: [],
-        sectionId: "#feature-direccion"
-    },
-    "chasis": {
-        title: "Chasis Tubular — Análisis CAE Estructural",
-        desc: "Estructura tubular AISI 4130 optimizada topológicamente en Altair OptiStruct. Los análisis de Von Mises y predicción de fatiga confirman integridad estructural bajo los escenarios de vuelco (Roll-Over Protection) y carga frontal exigidos por el artículo de seguridad del reglamento SAE Baja 2026.",
-        sponsors: [
-            sponsorLink("https://altair.com", "Outbound Sponsor - Altair", logoAltair.src, "Altair"),
-        ],
-        sectionId: null
-    },
-    "default": {
-        title: "Componente Estructural — JR25",
-        desc: "Pieza validada dentro del ensamblaje general del Baja SAE JR25. Cada subsistema pasa por una cadena de simulación FEM (Altair / Ansys) antes de autorizar su manufactura, garantizando que el esfuerzo operativo no supere el 70% del límite de fluencia del material seleccionado.",
-        sponsors: [],
-        sectionId: null
-    }
-};
-
+    // 2. LÓGICA DE RENDERIZADO Y CARGA GLTF (Intacta)
     let cleanupViewer: (() => void) | undefined;
 
     const disposeMaterial = (material: any): void => {
@@ -385,6 +250,7 @@ const dataDiccionario = {
             if (intersects.length > 0) {
                 const clickedMesh = intersects[0].object;
                 
+                // Aquí se despacha el evento que captura la otra función
                 const eventData = new CustomEvent('updatePanel', { detail: clickedMesh.name.toLowerCase() });
                 document.dispatchEvent(eventData);
 
@@ -430,33 +296,12 @@ const dataDiccionario = {
         };
     }
 
-    const isMobileDevice = () => window.matchMedia('(max-width: 768px)').matches || window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-
-    function attachSponsorHover(logosContainer: HTMLElement) {
-        logosContainer.querySelectorAll('.panel-sponsor-link').forEach(link => {
-            const img = link.querySelector('img') as HTMLImageElement | null;
-            if (!img) return;
-
-            if (isMobileDevice()) {
-                img.style.opacity = '1';
-                return; 
-            }
-
-            link.addEventListener('mouseenter', () => {
-                img.style.opacity = '1';
-                img.style.transform = 'scale(1.08)';
-            });
-
-            link.addEventListener('mouseleave', () => {
-                img.style.opacity = '0.7';
-                img.style.transform = '';
-            });
-        });
-    }
-
+    // 3. ACTUALIZACIÓN DE LA INTERFAZ LIMPIA
     document.addEventListener('updatePanel', (e: any) => {
         const meshName = e.detail;
-        let selectedData = dataDiccionario["default"];
+        
+        // @ts-ignore
+        let selectedData = simpleDiccionario["default"];
 
         const idsPowertrain = ["prototipo_29", "prototipo_32"];
         const idsSuspension = [
@@ -472,40 +317,35 @@ const dataDiccionario = {
             "prototipo_45", "prototipo_46"
         ];
         const idsDireccion = ["prototipo_30", "prototipo_31"];
-        const idsChasis: string[] = [];
+        const idsChasis: string[] = []; // Si en el futuro mapeas los tubos, agrégalos aquí
 
         if (idsPowertrain.includes(meshName)) {
-            selectedData = dataDiccionario["powertrain"];
+            // @ts-ignore
+            selectedData = simpleDiccionario["powertrain"];
         } else if (idsSuspension.includes(meshName)) {
-            selectedData = dataDiccionario["suspension"];
+            // @ts-ignore
+            selectedData = simpleDiccionario["suspension"];
         } else if (idsFrenos.includes(meshName)) {
-            selectedData = dataDiccionario["frenos"];
+            // @ts-ignore
+            selectedData = simpleDiccionario["frenos"];
         } else if (idsDireccion.includes(meshName)) {
-            selectedData = dataDiccionario["direccion"];
+            // @ts-ignore
+            selectedData = simpleDiccionario["direccion"];
         } else if (idsChasis.includes(meshName)) {
-            selectedData = dataDiccionario["chasis"];
+            // @ts-ignore
+            selectedData = simpleDiccionario["chasis"];
         }
 
-        document.getElementById('panel-title')!.innerText = selectedData.title;
-        document.getElementById('panel-desc')!.innerText = selectedData.desc;
+        const titleEl = document.getElementById('active-system-name');
+        const btn = document.getElementById('btn-more-info') as HTMLAnchorElement;
+        
+        if (titleEl) titleEl.innerText = selectedData.name;
 
-        const btn = document.getElementById('panel-action-btn') as HTMLAnchorElement;
-        if (selectedData.sectionId) {
+        if (selectedData.sectionId && btn) {
             btn.href = selectedData.sectionId;
             btn.classList.remove('hidden');
-        } else {
+        } else if (btn) {
             btn.classList.add('hidden');
-        }
-
-        const sponsorsContainer = document.getElementById('panel-sponsors');
-        const logosContainer = document.getElementById('sponsor-logos-container') as HTMLElement;
-
-        if (selectedData.sponsors.length > 0) {
-            logosContainer.innerHTML = selectedData.sponsors.join('');
-            sponsorsContainer!.classList.remove('hidden');
-            attachSponsorHover(logosContainer);
-        } else {
-            sponsorsContainer!.classList.add('hidden');
         }
     });
 
