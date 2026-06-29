@@ -1,38 +1,84 @@
 ---
-// Interfaz Educativa Jaguar Racing - Metodología y Fundamentos (Z-Pattern Layout)
+// src/components/CadsBajaSection.astro
+import { Image } from "astro:assets";
+
+interface Sponsor {
+    img: string;
+    nombre: string;
+    url: string;
+}
+
+// 1. CARGA DINÁMICA DE ASSETS (Igual que en tu carrusel)
+const images = import.meta.glob<{ default: ImageMetadata }>(
+    "../../assets/IMGpatrocinadores/*.{png,webp,jpg,svg,jpeg,PNG}",
+    { eager: true }
+);
+
+const getLogoImage = (filename: string) => {
+    const imagePath = Object.keys(images).find((path) =>
+        path.endsWith(filename)
+    );
+    if (!imagePath) {
+        console.warn(`[CadsBajaSection] Logo no encontrado: ${filename}`);
+        return null;
+    }
+    return images[imagePath].default;
+};
+
+// 2. DICCIONARIO MAESTRO
+const allSponsors: Record<string, Sponsor> = {
+    smi: { img: "SMI.webp", nombre: "SMI México", url: "https://www.smimexico.com.mx/" },
+    solidworks: { img: "solidwor.webp", nombre: "SolidWorks", url: "https://www.solidworks.com" },
+    copiisa: { img: "copiisa.webp", nombre: "Copiisa", url: "https://www.linkedin.com/company/copiisaoffshore/?originalSubdomain=mx" },
+    bimsa: { img: "bimsa.webp", nombre: "BIMSA", url: "https://www.linkedin.com/company/bombas-internacionales-mexicanas-sa-cv" },
+    altair: { img: "altair.webp", nombre: "Altair", url: "https://altair.com" },
+    toyota: { img: "toyota.webp", nombre: "Toyota", url: "https://www.toyota.mx" },
+    market3d: { img: "3DMarket.webp", nombre: "3DMarket", url: "https://www.3dmarket.mx/" },
+    dassault: { img: "dassault.webp", nombre: "Dassault Systèmes", url: "https://www.3ds.com/es/" },
+    hexagon: { img: "Hexagono.webp", nombre: "Hexagon", url: "https://hexagon.com" },
+    heydi: { img: "heydi.webp", nombre: "Heydi", url: "https://www.facebook.com/ventasheydi/" },
+    mastercam: { img: "MasterCard.webp", nombre: "MasterCard", url: "https://mastercam.mx/" },
+    ansys: { img: "ansys.webp", nombre: "Ansys", url: "https://www.ansys.com" },
+    nemi: { img: "nemi.webp", nombre: "NEMI", url: "https://www.nemi.com.mx" },
+    minimmal: { img: "minimmal.webp", nombre: "Minimmal", url: "https://www.minimmal.com.mx" },
+    ditsa: { img: "ditsa.webp", nombre: "Ditsa", url: "https://www.ditsa.com.mx" },
+    cleveland: { img: "Cleveland.webp", nombre: "Cleveland", url: "https://www.mms-mexico.com/proveedores/herramientas-cleveland" },
+};
+
+// 3. ASIGNACIÓN ESTRATÉGICA
 const areas = [
     {
         id: 'powertrain',
-        title: 'TRANSFERENCIA DE POTENCIA',
-        subtitle: 'POWERTRAIN',
-        desc: 'Optimización de la cadena cinemática desde el motor Briggs & Stratton 10HP hasta el eje trasero mediante una CVT Comet 780 calibrada en conjunto con una caja reductora de relación variable. El análisis por FEM en Altair HyperMesh validó la resistencia de los componentes bajo picos de torque superiores a 65 Nm, garantizando una eficiencia de transferencia mayor al 88% en los regímenes de operación exigidos por la normativa SAE Baja 2026.',
+        title: 'Tren Motriz',
+        desc: 'El tren motriz es el corazón que mueve al monoplaza. Utilizamos una caja de transmisión variable (CVT) junto a una reductora para adaptar la fuerza del motor a cualquier terreno de forma eficiente. Todo el sistema fue validado mediante simulaciones estructurales para asegurar que soporte los picos de fuerza que ocurren durante las aceleraciones más demandantes en competencia.',
         videoFile: 'F-GB.mp4', 
+        sponsors: [allSponsors.solidworks, allSponsors.heydi, allSponsors.ditsa]
     },
     {
         id: 'suspension',
-        title: 'CINEMÁTICA Y AMORTIGUACIÓN',
-        subtitle: 'SUSPENSIÓN',
-        desc: 'Arquitectura de doble horquilla con un KPI (King Pin Inclination) de 41.34°, seleccionado mediante iteraciones de análisis cinemático en Altair MotionView para maximizar la recuperación de camber bajo deflexión severa. La geometría garantiza contacto neumático constante en superficies de hasta 30° de inclinación, controlando el centro de balanceo dinámico y la distribución de cargas para minimizar el riesgo de vuelco en los artículos de terreno del reglamento.',
+        title: 'SUSPENSIÓN',
+        desc: 'Una suspensión bien diseñada es lo que separa a un auto estable de uno que pierde el control. Utilizamos una arquitectura de doble horquilla optimizada para mantener la llanta siempre en contacto con el suelo. Esto permite absorber impactos severos en terrenos irregulares sin comprometer la estabilidad lateral, logrando una respuesta predecible incluso en pendientes pronunciadas.',
         videoFile: 'Front susp der.mp4',
+        sponsors: [allSponsors.altair, allSponsors.dassault, allSponsors.market3d]
     },
     {
         id: 'frenos',
-        title: 'SISTEMA DE FRENADO Y SEGURIDAD',
-        subtitle: 'FRENOS',
-        desc: 'Sistema hidráulico de circuito dual con un balance de frenado F/R ajustado al 62/38% para prevenir el bloqueo prematuro del eje trasero. El dimensionamiento térmico de los rotores, validado mediante simulación FEM en Ansys Thermal, garantiza la disipación de 3.2 kJ por evento de frenado sin superar los 280°C en el disco. La presión máxima de línea se estableció en 9.5 MPa, cumpliendo holgadamente los márgenes de seguridad del Artículo 4 del reglamento SAE Baja.',
+        title: 'FRENOS',
+        desc: 'La seguridad es prioritaria, por eso implementamos un sistema hidráulico de circuito dual. Esto nos permite equilibrar la presión de frenado entre los ejes delantero y trasero, mejorando el control. Los componentes fueron dimensionados térmicamente para trabajar bajo condiciones de alta fricción sin perder capacidad de respuesta, cumpliendo con los estándares de seguridad requeridos por la normativa.',
         videoFile: 'B-GB.mp4',
+        sponsors: [allSponsors.ansys, allSponsors.bimsa, allSponsors.copiisa]
     },
     {
         id: 'direccion',
-        title: 'GEOMETRÍA DE MANIOBRA',
-        subtitle: 'DIRECCIÓN',
-        desc: 'Mecanismo de piñón y cremallera con geometría de Ackermann optimizada al 74%, logrando un radio de giro interno agresivo de 1.53 m (60 in) en cumplimiento con la normativa SAE. El ensamble del housing fue simulado en LS-DYNA bajo picos de torque de 65 Nm, registrando un esfuerzo máximo de Von Mises de 244.5 MPa con un factor de seguridad de 1.4 sobre el límite de fluencia del material. El rediseño compacto redujo el empaquetado del sistema en un 15% respecto a la iteración anterior.',
+        title: 'DIRECCIÓN',
+        desc: 'La precisión en los giros es fundamental para circuitos técnicos. Desarrollamos un sistema de piñón y cremallera con geometría de dirección optimizada para reducir el radio de giro y facilitar maniobras en espacios cerrados. El conjunto está diseñado para soportar altos esfuerzos mecánicos durante el manejo agresivo, garantizando durabilidad y una respuesta directa en cada curva.',
         videoFile: 'Ensamble Housin JR25.mp4',
+        sponsors: [allSponsors.mastercam, allSponsors.hexagon, allSponsors.smi, allSponsors.cleveland]
     }
 ];
 ---
 
-<section class="eng-section">
+<section class="eng-section" id="detalles">
     <div class="eng-container">
         {areas.map((area, i) => (
             <article class={`eng-feature ${i % 2 !== 0 ? 'is-reversed' : ''}`} id={`feature-${area.id}`}>
@@ -51,16 +97,35 @@ const areas = [
                 </div>
                 
                 <div class="feature-info">
-                    <span class="feature-subtitle">{area.subtitle}</span>
                     <h2 class="feature-title">{area.title}</h2>
                     <p class="feature-desc">{area.desc}</p>
+                    
+                    <!-- INYECCIÓN DE PATROCINADORES -->
+                    <div class="feature-sponsors">
+                        <span class="sponsors-label">Validado y manufacturado con:</span>
+                        <div class="sponsors-grid">
+                            {area.sponsors.map(sponsor => {
+                                const logoImg = getLogoImage(sponsor.img);
+                                return logoImg ? (
+                                    <a href={sponsor.url} target="_blank" rel="noopener noreferrer" class="sponsor-logo-link" title={sponsor.nombre}>
+                                        <Image 
+                                            src={logoImg} 
+                                            alt={`Logo de ${sponsor.nombre}`} 
+                                            class="sponsor-img"
+                                            loading="lazy"
+                                        />
+                                    </a>
+                                ) : null;
+                            })}
+                        </div>
+                    </div>
+
                 </div>
             </article>
         ))}
     </div>
 </section>
 
-<!-- El bloque <style> no cambia; se conserva íntegro -->
 <style>
     .eng-section {
         background: var(--bg-black);
@@ -78,6 +143,7 @@ const areas = [
         grid-template-columns: 1fr 1fr;
         gap: 4rem;
         align-items: center;
+        scroll-margin-top: 100px; 
     }
     .eng-feature.is-reversed { direction: rtl; }
     .eng-feature.is-reversed > * { direction: ltr; }
@@ -108,7 +174,6 @@ const areas = [
     .feature-info { display: flex; flex-direction: column; justify-content: center; }
     .feature-subtitle {
         color: var(--text-gray);
-        font-family: var(--font-main);
         font-weight: 700;
         font-size: 0.8rem;
         text-transform: uppercase;
@@ -116,7 +181,54 @@ const areas = [
         margin-bottom: 0.5rem;
         display: block;
     }
-    .feature-desc { color: var(--text-gray); line-height: 1.7; margin: 0; max-width: 90%; }
+    .feature-title { margin-top: 0; font-size: clamp(1.5rem, 3vw, 2.2rem); }
+    .feature-desc { color: var(--text-gray); line-height: 1.7; margin: 0 0 2rem 0; max-width: 90%; }
+    
+    /* ESTILOS DE LOS PATROCINADORES */
+    .feature-sponsors {
+        margin-top: 1rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        max-width: 90%;
+    }
+    
+    .sponsors-label {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--text-gray);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 1rem;
+    }
+
+    .sponsors-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        align-items: center;
+    }
+
+    .sponsor-logo-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 40px; 
+        transition: transform 0.3s ease, filter 0.3s ease;
+        filter: grayscale(100%) opacity(0.7); 
+    }
+
+    .sponsor-logo-link:hover {
+        transform: scale(1.05);
+        filter: grayscale(0%) opacity(1); 
+    }
+
+    .sponsor-img {
+        height: 100%;
+        width: auto;
+        max-width: 120px;
+        object-fit: contain;
+    }
+
     @media (max-width: 900px) {
         .eng-container { gap: 4rem; }
         .eng-feature, .eng-feature.is-reversed {
@@ -127,6 +239,7 @@ const areas = [
         }
         .feature-info { align-items: center; }
         .feature-title { text-align: center; }
-        .feature-desc { max-width: 100%; text-align: center; }
+        .feature-desc, .feature-sponsors { max-width: 100%; text-align: center; }
+        .sponsors-grid { justify-content: center; }
     }
 </style>
