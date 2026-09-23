@@ -29,7 +29,7 @@ IDIOMA: Responde en el mismo idioma del usuario (ES/EN).
 - MAPA: https://maps.app.goo.gl/fLMraKBoP9kASJbZ9
 
 [KNOWLEDGE BASE - RECRUITMENT STATUS]
-- ESTADO ACTUAL: Convocatoria cerrada. Lista de Espera abierta para Agosto 2026.
+- ESTADO ACTUAL: Convocatoria cerrada. Lista de Espera abierta para el periodo 2026/27.
 - PERFIL BUSCADO: Estudiantes IPN con iniciativa, autogestión y nociones básicas.
 - LINK (NO ES PARA PATROCINAODRES): https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=2fRL-ZeAlEet9qVGbKKFY5aTG26BlHBMh-vtwJX9tNJUOE9aNU9LQjJIS0tSM0NXUEE5Sk1PMjA1SS4u 
 
