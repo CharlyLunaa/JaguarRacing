@@ -8,21 +8,37 @@ interface Sponsor {
     url: string;
 }
 
-// 1. CARGA DINÁMICA DE ASSETS (Igual que en tu carrusel)
+// 1. CARGA DINÁMICA DE ASSETS
 const images = import.meta.glob<{ default: ImageMetadata }>(
     "../../assets/IMGpatrocinadores/*.{png,webp,jpg,svg,jpeg,PNG}",
     { eager: true }
 );
 
+const areaImages = import.meta.glob<{ default: ImageMetadata }>(
+    "../../assets/Index/*.{png,webp,jpg,jpeg,PNG,JPG}",
+    { eager: true }
+);
+
 const getLogoImage = (filename: string) => {
     const imagePath = Object.keys(images).find((path) =>
-        path.endsWith(filename)
+        path.endsWith(`/${filename}`)
     );
     if (!imagePath) {
         console.warn(`[CadsBajaSection] Logo no encontrado: ${filename}`);
         return null;
     }
     return images[imagePath].default;
+};
+
+const getAreaImage = (filename: string) => {
+    const imagePath = Object.keys(areaImages).find((path) =>
+        path.endsWith(`/${filename}`)
+    );
+    if (!imagePath) {
+        console.warn(`[CadsBajaSection] Imagen no encontrada: ${filename}`);
+        return null;
+    }
+    return areaImages[imagePath].default;
 };
 
 // 2. DICCIONARIO MAESTRO
@@ -51,28 +67,28 @@ const areas = [
         id: 'powertrain',
         title: 'Tren Motriz',
         desc: 'El tren motriz es el corazón que mueve al monoplaza. Utilizamos una caja de transmisión variable (CVT) junto a una reductora para adaptar la fuerza del motor a cualquier terreno de forma eficiente. Todo el sistema fue validado mediante simulaciones estructurales para asegurar que soporte los picos de fuerza que ocurren durante las aceleraciones más demandantes en competencia.',
-        videoFile: 'F-GB.mp4', 
+        imageFile: '1.webp',
         sponsors: [allSponsors.solidworks, allSponsors.heydi, allSponsors.ditsa]
     },
     {
         id: 'suspension',
         title: 'SUSPENSIÓN',
         desc: 'Una suspensión bien diseñada es lo que separa a un auto estable de uno que pierde el control. Utilizamos una arquitectura de doble horquilla optimizada para mantener la llanta siempre en contacto con el suelo. Esto permite absorber impactos severos en terrenos irregulares sin comprometer la estabilidad lateral, logrando una respuesta predecible incluso en pendientes pronunciadas.',
-        videoFile: 'Front susp der.mp4',
+        imageFile: '1.webp',
         sponsors: [allSponsors.altair, allSponsors.dassault, allSponsors.market3d]
     },
     {
         id: 'frenos',
         title: 'FRENOS',
         desc: 'La seguridad es prioritaria, por eso implementamos un sistema hidráulico de circuito dual. Esto nos permite equilibrar la presión de frenado entre los ejes delantero y trasero, mejorando el control. Los componentes fueron dimensionados térmicamente para trabajar bajo condiciones de alta fricción sin perder capacidad de respuesta, cumpliendo con los estándares de seguridad requeridos por la normativa.',
-        videoFile: 'B-GB.mp4',
+        imageFile: '1.webp',
         sponsors: [allSponsors.ansys, allSponsors.bimsa, allSponsors.copiisa]
     },
     {
         id: 'direccion',
         title: 'DIRECCIÓN',
         desc: 'La precisión en los giros es fundamental para circuitos técnicos. Desarrollamos un sistema de piñón y cremallera con geometría de dirección optimizada para reducir el radio de giro y facilitar maniobras en espacios cerrados. El conjunto está diseñado para soportar altos esfuerzos mecánicos durante el manejo agresivo, garantizando durabilidad y una respuesta directa en cada curva.',
-        videoFile: 'Ensamble Housin JR25.mp4',
+        imageFile: '1.webp',
         sponsors: [allSponsors.mastercam, allSponsors.hexagon, allSponsors.smi, allSponsors.cleveland]
     }
 ];
@@ -80,49 +96,50 @@ const areas = [
 
 <section class="eng-section" id="detalles">
     <div class="eng-container">
-        {areas.map((area, i) => (
-            <article class={`eng-feature ${i % 2 !== 0 ? 'is-reversed' : ''}`} id={`feature-${area.id}`}>
-                <div class="feature-video-wrapper">
-                    <div class="video-frame">
-                        <video 
-                            src={`/actualizaciones/videos/${area.videoFile}`}
-                            class="cad-native-video"
-                            autoplay 
-                            loop 
-                            muted 
-                            playsinline
-                            disablepictureinpicture
-                        ></video>
-                    </div>
-                </div>
-                
-                <div class="feature-info">
-                    <h2 class="feature-title">{area.title}</h2>
-                    <p class="feature-desc">{area.desc}</p>
-                    
-                    <!-- INYECCIÓN DE PATROCINADORES -->
-                    <div class="feature-sponsors">
-                        <span class="sponsors-label">Validado y manufacturado con:</span>
-                        <div class="sponsors-grid">
-                            {area.sponsors.map(sponsor => {
-                                const logoImg = getLogoImage(sponsor.img);
-                                return logoImg ? (
-                                    <a href={sponsor.url} target="_blank" rel="noopener noreferrer" class="sponsor-logo-link" title={sponsor.nombre}>
-                                        <Image 
-                                            src={logoImg} 
-                                            alt={`Logo de ${sponsor.nombre}`} 
-                                            class="sponsor-img"
-                                            loading="lazy"
-                                        />
-                                    </a>
-                                ) : null;
-                            })}
+        {areas.map((area, i) => {
+            const areaImg = getAreaImage(area.imageFile);
+            return (
+                <article class={`eng-feature ${i % 2 !== 0 ? 'is-reversed' : ''}`} id={`feature-${area.id}`}>
+                    <div class="feature-media-wrapper">
+                        <div class="media-frame">
+                            {areaImg && (
+                                <Image
+                                    src={areaImg}
+                                    alt={area.title}
+                                    class="feature-img"
+                                    loading="lazy"
+                                />
+                            )}
                         </div>
                     </div>
 
-                </div>
-            </article>
-        ))}
+                    <div class="feature-info">
+                        <h2 class="feature-title">{area.title}</h2>
+                        <p class="feature-desc">{area.desc}</p>
+
+                        <!-- INYECCIÓN DE PATROCINADORES -->
+                        <div class="feature-sponsors">
+                            <span class="sponsors-label">Validado y manufacturado con:</span>
+                            <div class="sponsors-grid">
+                                {area.sponsors.map(sponsor => {
+                                    const logoImg = getLogoImage(sponsor.img);
+                                    return logoImg ? (
+                                        <a href={sponsor.url} target="_blank" rel="noopener noreferrer" class="sponsor-logo-link" title={sponsor.nombre}>
+                                            <Image
+                                                src={logoImg}
+                                                alt={`Logo de ${sponsor.nombre}`}
+                                                class="sponsor-img"
+                                                loading="lazy"
+                                            />
+                                        </a>
+                                    ) : null;
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            );
+        })}
     </div>
 </section>
 
@@ -143,12 +160,12 @@ const areas = [
         grid-template-columns: 1fr 1fr;
         gap: 4rem;
         align-items: center;
-        scroll-margin-top: 100px; 
+        scroll-margin-top: 100px;
     }
     .eng-feature.is-reversed { direction: rtl; }
     .eng-feature.is-reversed > * { direction: ltr; }
-    .feature-video-wrapper { position: relative; width: 100%; }
-    .video-frame {
+    .feature-media-wrapper { position: relative; width: 100%; }
+    .media-frame {
         position: relative;
         padding-top: 56.25%;
         background: #050505;
@@ -158,32 +175,22 @@ const areas = [
         box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
-    .video-frame:hover {
+    .media-frame:hover {
         transform: translateY(-5px);
         box-shadow: 0 30px 50px rgba(0,0,0,0.6);
         border-color: rgba(166, 124, 0, 0.3);
     }
-    .cad-native-video {
+    .feature-img {
         position: absolute;
         inset: 0;
         width: 100%;
         height: 100%;
         object-fit: cover;
-        pointer-events: none;
     }
     .feature-info { display: flex; flex-direction: column; justify-content: center; }
-    .feature-subtitle {
-        color: var(--text-gray);
-        font-weight: 700;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        margin-bottom: 0.5rem;
-        display: block;
-    }
     .feature-title { margin-top: 0; font-size: clamp(1.5rem, 3vw, 2.2rem); }
     .feature-desc { color: var(--text-gray); line-height: 1.7; margin: 0 0 2rem 0; max-width: 90%; }
-    
+
     /* ESTILOS DE LOS PATROCINADORES */
     .feature-sponsors {
         margin-top: 1rem;
@@ -191,7 +198,7 @@ const areas = [
         border-top: 1px solid rgba(255, 255, 255, 0.1);
         max-width: 90%;
     }
-    
+
     .sponsors-label {
         display: block;
         font-size: 0.75rem;
@@ -212,14 +219,14 @@ const areas = [
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        height: 40px; 
+        height: 40px;
         transition: transform 0.3s ease, filter 0.3s ease;
-        filter: grayscale(100%) opacity(0.7); 
+        filter: grayscale(100%) opacity(0.7);
     }
 
     .sponsor-logo-link:hover {
         transform: scale(1.05);
-        filter: grayscale(0%) opacity(1); 
+        filter: grayscale(0%) opacity(1);
     }
 
     .sponsor-img {
